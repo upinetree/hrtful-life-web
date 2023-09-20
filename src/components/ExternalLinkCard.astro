@@ -1,30 +1,31 @@
 ---
 import LabelInactive from "../components/LabelInactive.astro";
+import IconArrowUpRight from "./IconArrowUpRight.astro";
 
 const { heading, url, name, description, label } = Astro.props;
 ---
 
-<div
-  class="bg-white/50 py-4 px-6 w-full sm:rounded-xl sm:px-4"
->
-  {
-    label ? (
-      <h3 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
-        <span>{heading}</span>
-        {(() => {
-          switch (label) {
-            case "inactive":
-              return <LabelInactive />;
-            default:
-              return label;
-          }
-        })()}
-      </h3>
-    ) : (
-      <h3 class="text-xl font-semibold">{heading}</h3>
-    )
-  }
-
-  <a href={url} class="link text-lg">{name}</a>
-  { description && <p class="text-gray-800">{description}</p> }
-</div>
+<a href={url} target="_blank" rel="noreferrer">
+  <div
+    class="bg-white/50 py-4 px-6 w-full sm:rounded-xl sm:px-4 hover:opacity-80 hover:ring-2 focus:ring-2 ring-spring-green-200"
+  >
+    {
+      (
+        <h3 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
+          <span>{heading}</span>
+          {(() => {
+            switch (label) {
+              case "inactive":
+                return <LabelInactive />;
+              default:
+                return null;
+            }
+          })()}
+          <IconArrowUpRight className="w-4 h-4 ml-auto text-gray-400" />
+        </h3>
+      )
+    }
+    <p class="text-spring-pink-500 text-lg">{name}</p>
+    {description && <p class="text-gray-800">{description}</p>}
+  </div>
+</a>

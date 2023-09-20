@@ -1,6 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import ExternalLinkCard from "../components/ExternalLinkCard.astro";
+import IconMapPin from "../components/IconMapPin.astro";
+import IconArrowTopRightOnSquare from "../components/IconArrowTopRightOnSquare.astro";
 
 import avatarImage from "../images/me.jpg";
 import rails5BookImage from "../images/rails5_book_cover.jpg";
@@ -17,8 +19,10 @@ import rails5BookImage from "../images/rails5_book_cover.jpg";
         />
         <div class="sm:ml-3 mt-3">
           <h3 class="text-2xl font-semibold text-grey-800">Takuya Matsumoto</h3>
-          <p>Software Engineer, Engineering Manager<br />
-            📍Tokyo
+          <p>Software Engineer, Engineering Manager</p>
+          <p class="text-gray-500">
+            <IconMapPin className="w-5 h-5 inline-block" />
+            <span>Tokyo</span>
           </p>
         </div>
       </div>
@@ -78,18 +82,26 @@ import rails5BookImage from "../images/rails5_book_cover.jpg";
             <a
               href="https://product.st.inc/entry/2023/04/20/170647"
               class="link"
+              target="_blank"
+              rel="noreferrer"
               >2023/04/20 育休前に振り返る、私がEMとして大切にしている考え方 -
               STORES Product Blog</a
-            >
+            ><IconArrowTopRightOnSquare
+              className="w-4 h-4 inline-block ml-1 text-gray-500"
+            />
           </li>
           <li class="pb-2">
             <a
               href="https://product.st.inc/entry/2022/07/07/142350"
               class="link"
+              target="_blank"
+              rel="noreferrer"
               >2022/07/07 STORES におけるセッションストアへの MemoryDB
               の活用と移行戦略について話してきました（前編） - STORES Product
               Blog</a
-            >
+            ><IconArrowTopRightOnSquare
+              className="w-4 h-4 inline-block ml-1 text-gray-500"
+            />
           </li>
         </ul>
       </div>
@@ -109,49 +121,55 @@ import rails5BookImage from "../images/rails5_book_cover.jpg";
           name="@upinetree"
         />
       </div>
-      <div class="flex flex-col mt-4 gap-4 sm:mx-0 -mx-4 ">
+      <div class="flex flex-col mt-4 gap-4 sm:mx-0 -mx-4">
         <div
           class="bg-white/50 border sm:rounded-xl flex flex-row items-center"
         >
-          <a
-            class="hover:opacity-75"
-            href="https://book.mynavi.jp/ec/products/detail/id=93905"
+          <div
+            class="w-full rounded-t-xl rounded-l-xl rounded-tr-none overflow-hidden min-w-[6rem] max-w-[15rem] sm:pl-0 pl-4"
           >
-            <div
-              class="flex-shrink-0 w-full rounded-t-xl rounded-l-xl rounded-tr-none overflow-hidden min-w-[5rem] max-w-[15rem] sm:pl-0 pl-4"
-            >
-              <img
-                class="w-full"
-                src={rails5BookImage.src}
-                alt="現場で使える Ruby on Rails 5速習実践ガイド: 書影"
-              />
-            </div>
-          </a>
+            <img
+              class="w-full"
+              src={rails5BookImage.src}
+              alt="現場で使える Ruby on Rails 5速習実践ガイド: 書影"
+            />
+          </div>
 
-          <div class="flex flex-col h-full p-4">
+          <div class="flex flex-col h-full p-4 gap-2">
             <h3 class="text-lg font-bold text-gray-800">
               現場で使える Ruby on Rails 5速習実践ガイド
             </h3>
-            <p class="mt-1 text-gray-800 text-sm">
-              2018/10/19 マイナビ出版より
+            <p class="text-gray-800 text-sm">
+              2018/10/19 マイナビ出版
             </p>
-            <p class="mt-1 text-gray-800">
+            <p class="text-gray-800">
               Ruby on Rails
               の基本的な使い方の解説から、複数人での開発やメンテナンスしやすい状態の維持などの実践的なトピックにまで広くカバーした書籍です。
               万葉の仲間と共著で書きました。
             </p>
 
-            <p class="mt-1 text-gray-800">
-              <a
-                href="https://book.mynavi.jp/ec/products/detail/id=93905"
-                class="link">出版社サイト</a
-              >
-               ,
-              <a
-                href="https://upinetree.hatenablog.com/entry/2018/10/17/111049"
-                class="link">紹介ブログ記事</a
-              >
-            </p>
+            <div class="text-gray-800 flex-col">
+              <div>
+                <a
+                  href="https://book.mynavi.jp/ec/products/detail/id=93905"
+                  class="link"
+                  target="_blank"
+                  rel="noreferrer">出版社サイト</a
+                ><IconArrowTopRightOnSquare
+                  className="w-4 h-4 inline-block ml-1 text-gray-400"
+                />
+              </div>
+              <div>
+                <a
+                  href="https://upinetree.hatenablog.com/entry/2018/10/17/111049"
+                  class="link"
+                  target="_blank"
+                  rel="noreferrer">紹介ブログ記事</a
+                ><IconArrowTopRightOnSquare
+                  className="w-4 h-4 inline-block ml-1 text-gray-400"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
