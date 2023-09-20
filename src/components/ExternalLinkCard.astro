@@ -1,0 +1,30 @@
+---
+import LabelInactive from "../components/LabelInactive.astro";
+
+const { heading, url, name, description, label } = Astro.props;
+---
+
+<div
+  class="bg-white/50 py-4 px-6 w-full sm:rounded-xl sm:px-4"
+>
+  {
+    label ? (
+      <h3 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
+        <span>{heading}</span>
+        {(() => {
+          switch (label) {
+            case "inactive":
+              return <LabelInactive />;
+            default:
+              return label;
+          }
+        })()}
+      </h3>
+    ) : (
+      <h3 class="text-xl font-semibold">{heading}</h3>
+    )
+  }
+
+  <a href={url} class="link text-lg">{name}</a>
+  { description && <p class="text-gray-800">{description}</p> }
+</div>

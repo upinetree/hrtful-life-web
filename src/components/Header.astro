@@ -1,0 +1,19 @@
+---
+const { brand } = Astro.props;
+---
+
+<header class="hrt-container flex flex-wrap sm:justify-start sm:flex-nowrap py-4">
+  <nav
+    class="w-full sm:flex sm:items-center sm:justify-between"
+    aria-label="Global"
+  >
+    <a class="flex-none text-xl font-semibold text-spring-green-500" href="/"
+      >{brand}</a
+    >
+    <!-- <div
+      class="flex flex-row items-center gap-5 mt-5 sm:justify-end sm:mt-0 sm:pl-5"
+    >
+      <a>...</a>
+    </div> -->
+  </nav>
+</header>

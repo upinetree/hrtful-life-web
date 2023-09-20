@@ -1,9 +1,160 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import ExternalLinkCard from "../components/ExternalLinkCard.astro";
+
+import avatarImage from "../images/me.jpg";
+import rails5BookImage from "../images/rails5_book_cover.jpg";
 ---
 
 <Layout title="Home">
-  <main>
-	<p>Takuya Matsumoto のポータルサイトです。</p>
-  </main>
+  <div class="flex flex-col justify-start gap-10">
+    <div class="my-10">
+      <div class="flex sm:flex-row flex-col items-center">
+        <img
+          class="inline-block flex-shrink-0 h-36 w-36 rounded-full"
+          src={avatarImage.src}
+          alt="Image Description"
+        />
+        <div class="sm:ml-3 mt-3">
+          <h3 class="text-2xl font-semibold text-grey-800">Takuya Matsumoto</h3>
+          <p>Software Engineer, Engineering Manager<br />
+            📍Tokyo
+          </p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h2 class="text-3xl font-bold pb-4">SNS</h2>
+      <div class="grid sm:grid-cols-2 grid-cols-1 gap-4 sm:mx-0 -mx-4">
+        <ExternalLinkCard
+          heading="Threads"
+          url="https://www.threads.net/@t_motty"
+          name="@t_motty@threads.net"
+          description="日常の一言日記。子育ての話題多め"
+        />
+        <ExternalLinkCard
+          heading="Misskey"
+          url="https://misskey.systems/@upinetree"
+          name="@upinetree@misskey.systems"
+          description="技術的なつぶやき（常時😺モード）"
+        />
+        <ExternalLinkCard
+          heading="X"
+          url="https://twitter.com/upinetree"
+          name="@upinetree"
+          description="お知らせ、連絡用"
+          label="inactive"
+        />
+        <ExternalLinkCard
+          heading="Facebook"
+          url="https://www.facebook.com/tkymtmt"
+          name="@tkymtmt"
+          description="お知らせ、連絡用"
+          label="inactive"
+        />
+      </div>
+    </div>
+    <div>
+      <h2 class="text-3xl font-bold pb-4">Articles</h2>
+      <div class="grid sm:grid-cols-2 grid-cols-1 gap-4 sm:mx-0 -mx-4">
+        <ExternalLinkCard
+          heading="Hatena Blog"
+          url="https://upinetree.hatenablog.com/"
+          name="upinetree's memo"
+          description="日常のことから技術的なことまで、気が向いたら書くブログ"
+        />
+        <ExternalLinkCard
+          heading="Qiita"
+          url="http://qiita.com/upinetree"
+          name="@upinetree"
+          label="inactive"
+          description="かつて書いてましたが Hatena Blog の方に集約することにしました"
+        />
+      </div>
+      <div>
+        <h3 class="text-xl font-semibold py-4">外部媒体</h3>
+        <ul class="list-disc list-inside pl-4">
+          <li class="pb-2">
+            <a
+              href="https://product.st.inc/entry/2023/04/20/170647"
+              class="link"
+              >2023/04/20 育休前に振り返る、私がEMとして大切にしている考え方 -
+              STORES Product Blog</a
+            >
+          </li>
+          <li class="pb-2">
+            <a
+              href="https://product.st.inc/entry/2022/07/07/142350"
+              class="link"
+              >2022/07/07 STORES におけるセッションストアへの MemoryDB
+              の活用と移行戦略について話してきました（前編） - STORES Product
+              Blog</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="text-3xl font-bold pb-4">Works</h2>
+      <div class="grid sm:grid-cols-2 grid-cols-1 gap-4 sm:mx-0 -mx-4">
+        <ExternalLinkCard
+          heading="GitHub"
+          url="https://github.com/upinetree"
+          name="@upinetree"
+        />
+        <ExternalLinkCard
+          heading="Speaker Deck"
+          url="https://speakerdeck.com/upinetree"
+          name="@upinetree"
+        />
+      </div>
+      <div class="flex flex-col mt-4 gap-4 sm:mx-0 -mx-4 ">
+        <div
+          class="bg-white/50 border sm:rounded-xl flex flex-row items-center"
+        >
+          <a
+            class="hover:opacity-75"
+            href="https://book.mynavi.jp/ec/products/detail/id=93905"
+          >
+            <div
+              class="flex-shrink-0 w-full rounded-t-xl rounded-l-xl rounded-tr-none overflow-hidden min-w-[5rem] max-w-[15rem] sm:pl-0 pl-4"
+            >
+              <img
+                class="w-full"
+                src={rails5BookImage.src}
+                alt="現場で使える Ruby on Rails 5速習実践ガイド: 書影"
+              />
+            </div>
+          </a>
+
+          <div class="flex flex-col h-full p-4">
+            <h3 class="text-lg font-bold text-gray-800">
+              現場で使える Ruby on Rails 5速習実践ガイド
+            </h3>
+            <p class="mt-1 text-gray-800 text-sm">
+              2018/10/19 マイナビ出版より
+            </p>
+            <p class="mt-1 text-gray-800">
+              Ruby on Rails
+              の基本的な使い方の解説から、複数人での開発やメンテナンスしやすい状態の維持などの実践的なトピックにまで広くカバーした書籍です。
+              万葉の仲間と共著で書きました。
+            </p>
+
+            <p class="mt-1 text-gray-800">
+              <a
+                href="https://book.mynavi.jp/ec/products/detail/id=93905"
+                class="link">出版社サイト</a
+              >
+               ,
+              <a
+                href="https://upinetree.hatenablog.com/entry/2018/10/17/111049"
+                class="link">紹介ブログ記事</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </Layout>
