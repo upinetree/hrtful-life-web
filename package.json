@@ -18,6 +18,7 @@
     "tailwindcss": "^3.3.3"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.10",
     "wrangler": "^3.8.0"
   }
 }
