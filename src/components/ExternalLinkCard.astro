@@ -7,7 +7,7 @@ const { heading, url, name, description, label } = Astro.props;
 
 <a href={url} target="_blank" rel="noreferrer">
   <div
-    class="bg-white/50 py-4 px-6 w-full sm:rounded-xl sm:px-4 hover:opacity-80 hover:ring-2 focus:ring-2 ring-spring-green-200"
+    class="bg-white/50 py-4 px-6 w-full sm:rounded-xl sm:px-4 hover:opacity-80 hover:ring-2 focus:ring-2 ring-spring-green-400"
   >
     {
       (
@@ -25,7 +25,7 @@ const { heading, url, name, description, label } = Astro.props;
         </h3>
       )
     }
-    <p class="text-spring-pink-500 text-lg">{name}</p>
+    <p class="text-spring-pink-500">{name}</p>
     {description && <p class="text-gray-800">{description}</p>}
   </div>
 </a>
