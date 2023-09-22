@@ -7,6 +7,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["Noto Sans JP", ...defaultTheme.fontFamily.sans],
+        brand: ["Moirai One", ...defaultTheme.fontFamily.sans],
       },
       colors: {
         "spring-green": {
