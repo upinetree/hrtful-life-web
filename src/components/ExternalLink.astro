@@ -1,0 +1,19 @@
+---
+import IconArrowTopRightOnSquare from './IconArrowTopRightOnSquare.astro';
+
+const { href } = Astro.props;
+
+interface Props {
+  href: string;
+}
+
+const className =
+  "text-spring-green-500 hover:text-spring-green-400 hover:underline";
+---
+
+<a href={href} class={className} target="_blank" rel="noreferrer">
+  <slot />
+</a>
+<IconArrowTopRightOnSquare
+  className="w-4 h-4 inline-block ml-1 text-gray-400"
+/>

@@ -1,8 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import ExternalLink from "../components/ExternalLink.astro";
 import ExternalLinkCard from "../components/ExternalLinkCard.astro";
 import IconMapPin from "../components/IconMapPin.astro";
-import IconArrowTopRightOnSquare from "../components/IconArrowTopRightOnSquare.astro";
 
 import avatarImage from "../images/me.jpg";
 import rails5BookImage from "../images/rails5_book_cover.jpg";
@@ -81,29 +81,17 @@ import rails5BookImage from "../images/rails5_book_cover.jpg";
         <h3 class="text-xl font-semibold py-4">外部媒体</h3>
         <ul class="list-disc list-inside pl-4">
           <li class="pb-2">
-            <a
-              href="https://product.st.inc/entry/2023/04/20/170647"
-              class="link"
-              target="_blank"
-              rel="noreferrer"
-              >2023/04/20 育休前に振り返る、私がEMとして大切にしている考え方 -
-              STORES Product Blog</a
-            ><IconArrowTopRightOnSquare
-              className="w-4 h-4 inline-block ml-1 text-gray-500"
-            />
+            <ExternalLink href="https://product.st.inc/entry/2023/04/20/170647">
+              2023/04/20 育休前に振り返る、私がEMとして大切にしている考え方 -
+              STORES Product Blog
+            </ExternalLink>
           </li>
           <li class="pb-2">
-            <a
-              href="https://product.st.inc/entry/2022/07/07/142350"
-              class="link"
-              target="_blank"
-              rel="noreferrer"
-              >2022/07/07 STORES におけるセッションストアへの MemoryDB
+            <ExternalLink href="https://product.st.inc/entry/2022/07/07/142350">
+              2022/07/07 STORES におけるセッションストアへの MemoryDB
               の活用と移行戦略について話してきました（前編） - STORES Product
-              Blog</a
-            ><IconArrowTopRightOnSquare
-              className="w-4 h-4 inline-block ml-1 text-gray-500"
-            />
+              Blog
+            </ExternalLink>
           </li>
         </ul>
       </div>
@@ -150,24 +138,18 @@ import rails5BookImage from "../images/rails5_book_cover.jpg";
 
             <div class="text-gray-800 flex-col">
               <div>
-                <a
+                <ExternalLink
                   href="https://book.mynavi.jp/ec/products/detail/id=93905"
-                  class="link"
-                  target="_blank"
-                  rel="noreferrer">出版社サイト</a
-                ><IconArrowTopRightOnSquare
-                  className="w-4 h-4 inline-block ml-1 text-gray-400"
-                />
+                >
+                  出版社サイト
+                </ExternalLink>
               </div>
               <div>
-                <a
+                <ExternalLink
                   href="https://upinetree.hatenablog.com/entry/2018/10/17/111049"
-                  class="link"
-                  target="_blank"
-                  rel="noreferrer">紹介ブログ記事</a
-                ><IconArrowTopRightOnSquare
-                  className="w-4 h-4 inline-block ml-1 text-gray-400"
-                />
+                >
+                  紹介ブログ記事
+                </ExternalLink>
               </div>
             </div>
           </div>
