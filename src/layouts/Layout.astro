@@ -18,6 +18,10 @@ const titlePrefix = "HRTful Life";
     <meta name="description" content="A portal site for Takuya Matsumoto" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Moirai+One&display=swap&text=HRTful.life" rel="stylesheet">
     <meta name="generator" content={Astro.generator} />
     <title>{titlePrefix} - {title}</title>
   </head>
@@ -35,9 +39,6 @@ const titlePrefix = "HRTful Life";
 </html>
 
 <style is:global>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&display=swap');
-  @import url('https://fonts.googleapis.com/css2?family=Moirai+One&display=swap&text=HRTful.life');
-
   .hrt-container {
     @apply max-w-[65rem] mx-auto px-4;
   }
