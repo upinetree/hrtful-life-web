@@ -4,12 +4,10 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "pages:dev": "wrangler pages dev --compatibility-date=2023-09-15 --proxy 3000 -- astro dev",
-    "pages:deploy": "astro build && wrangler pages deploy ./dist"
+    "update": "ncu -u && npm update"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^7.7.0",
@@ -20,6 +18,7 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
+    "npm-check-updates": "^16.14.6",
     "wrangler": "^3.15.0"
   }
 }
