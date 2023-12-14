@@ -1,26 +1,11 @@
 ---
-layout: ../layouts/MarkdownLayout.astro
+layout: ../layouts/ProfileMarkdownLayout.astro
 title: About Me
 updatedDate: 2023/09/23
 ---
 
 import ExternalLink from "../components/ExternalLink.astro";
 export const components = { a: ExternalLink };
-
-import avatarImage from "../images/me.jpg";
-
-# {frontmatter.title}
-
-<div class="flex sm:flex-row flex-col items-center">
-  <img
-    class="inline-block flex-shrink-0 h-36 w-36 rounded-full border-[3px] border-spring-green-500 m-0"
-    src={avatarImage.src}
-    alt="my avatar image"
-  />
-  <div class="sm:ml-6 sm:mt-0 mt-3">
-    <h3 class="m-0 text-3xl font-semibold text-grey-800">Takuya Matsumoto</h3>
-  </div>
-</div>
 
 はじめまして、あるいはこんにちは。松本です。
 
