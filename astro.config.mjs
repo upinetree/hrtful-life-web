@@ -9,6 +9,8 @@ export default defineConfig({
   output: "server",
   adapter: cloudflare({
     routes: {
+      strategy: "auto",
+      include: [],
       exclude: ["/", "/me"],
     },
   }),
