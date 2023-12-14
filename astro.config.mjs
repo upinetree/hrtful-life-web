@@ -9,7 +9,7 @@ export default defineConfig({
   output: "server",
   adapter: cloudflare({
     routes: {
-      exclude: ["/*"],
+      exclude: ["/", "/me"],
     },
   }),
   integrations: [tailwind(), mdx()],
