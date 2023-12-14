@@ -9,5 +9,4 @@ export default defineConfig({
   output: "hybrid",
   adapter: cloudflare(),
   integrations: [tailwind(), mdx()],
-  prefetch: { prefetchAll: true },
 });
