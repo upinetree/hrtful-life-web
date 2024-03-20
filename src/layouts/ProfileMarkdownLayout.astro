@@ -3,6 +3,7 @@ import Layout from "./Layout.astro";
 
 import type { MarkdownLayoutProps } from "astro";
 
+import { Image } from "astro:assets";
 import avatarImage from "../images/me.jpg";
 
 type Props = MarkdownLayoutProps<{
@@ -19,9 +20,10 @@ const { frontmatter } = Astro.props;
   >
     <h1>{frontmatter.title}</h1>
     <div class="flex sm:flex-row flex-col items-center">
-      <img
+      <Image
         class="inline-block flex-shrink-0 h-36 w-36 rounded-full border-[3px] border-spring-green-500 m-0"
-        src={avatarImage.src}
+        src={avatarImage}
+        loading="eager"
         alt="my avatar"
         transition:name="avatarMe"
       />
