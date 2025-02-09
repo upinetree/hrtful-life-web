@@ -7,7 +7,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "update": "ncu -u && npm update"
+    "update": "ncu -u --target minor && npm update"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^9.2.1",

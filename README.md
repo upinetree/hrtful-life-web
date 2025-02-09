@@ -25,6 +25,8 @@ npm run dev
 
 ## Update dependencies
 
+For update all dependencies (only minor):
+
 ```sh
 npm run update
 ```
