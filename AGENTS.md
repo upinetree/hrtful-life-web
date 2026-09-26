@@ -8,7 +8,7 @@
 
 - `npm install`: 依存関係をインストールします。Node.js は `.node-version` に合わせてください。
 - `npm run dev`: Astro の開発サーバーを起動します。
-- `npm run build`: 本番用ビルドを作成し、Astro/TypeScript レベルの問題も検出します。
+- `npm run build`: 本番用ビルドを作成し、Astro のビルドが完了することを確認します。
 - `npm run preview`: ビルド結果をローカルで確認します。
 - `npm run update`: `npm-check-updates` で minor 更新を反映し、依存関係を更新します。
 
