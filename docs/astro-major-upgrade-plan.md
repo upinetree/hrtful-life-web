@@ -7,7 +7,7 @@
 Astro を **5.8.2 → 5.18.2 → 6.4.8 → 7.3.5** の順で更新し、メジャーを一つずつ検証する。全3ページの静的配信、見た目、MDX、画像、画面遷移を維持する。Tailwind CSS 4 への移行は別タスクとする。
 
 - [x] 計画作成 — 状態: 完了。ローカルコードと公式一次情報を調査済み。
-- [ ] Phase 0: 基準点と型検査 — 状態: 作業中。基準点と既存診断を確認済みで、恒久的なcheck導入を残す。
+- [x] Phase 0: 基準点と型検査 — 状態: 完了。`npm run check` を以降の共通検証に追加。
 - [x] Phase 1: Astro 5 系内の更新 — 状態: 完了。コミット `b902305`。
 - [ ] Phase 2: Cloudflare adapter の整理 — 状態: 未着手。
 - [ ] Phase 3: Tailwind 3 の PostCSS 接続 — 状態: 未着手。
@@ -26,6 +26,8 @@ Astro を **5.8.2 → 5.18.2 → 6.4.8 → 7.3.5** の順で更新し、メジ�
 | Tailwind integration | 宣言 `^6.0.2`、lock `6.0.2` | `package.json:15`、`package-lock.json:218` |
 | Tailwind CSS | 宣言 `^3.4.17`、lock `3.4.17` | `package.json:17`、`package-lock.json:10252` |
 | Typography | 宣言 `^0.5.16`、lock `0.5.16` | `package.json:20`、`package-lock.json:2175` |
+| Astro check | 宣言・lock `0.9.10` | `package.json`、`package-lock.json` |
+| TypeScript | 宣言・lock `5.9.3` | `package.json`、`package-lock.json` |
 | Wrangler | 直接依存 `3.107.3`、adapter配下 `4.19.1` | `package-lock.json:11856`、`:104` |
 | Node.js | 指定・検証環境 `24.1.0` | `.node-version:1`、`mise exec node@24.1.0 -- node -v` |
 | npm / lock形式 | 検証環境 `11.3.0` / lockfileVersion `3` | `mise exec node@24.1.0 -- npm -v`、`package-lock.json:4` |
@@ -76,11 +78,11 @@ MDX のメジャー番号は Astro と連動しない。MDX 5.0.6 も Astro `^6.
 
 ## Phase 0 — 基準点と型検査
 
-状態: 作業中。Phase 1を先行して着手した後、必要性を再確認して再開した。基準点と既存診断を確認済みで、恒久的なcheck導入を残す。互換構成: Astro 5.18.2、Node 24.1.0、check 0.9.10、TypeScript 5.9.3。
+状態: 完了。Phase 1を先行して着手した後、必要性を再確認して再開した。互換構成: Astro 5.18.2、Node 24.1.0、check 0.9.10、TypeScript 5.9.3。
 
 - [x] 状態: 完了 — 作業ツリーと実行Node/npmを再確認し、Nodeを `.node-version` に揃えた。
 - [x] 状態: 完了 — 現行lockから `npm ci` とbuildを実行し、警告・監査件数・全3ページのHTTP応答を基準として記録した。
-- [ ] 状態: 未着手 — `package.json` に `"check": "astro check"` を追加し、checkとTypeScriptを直接devDependencyにする。
+- [x] 状態: 完了 — `package.json` に `"check": "astro check"` を追加し、checkとTypeScriptを直接devDependencyにした。
 - [x] 状態: 完了 — manifestとlockを変更しない一時導入でcheckを実行し、17ファイルが0 errors・0 warnings・0 hintsであることを確認した。型修正とtsconfig変更は不要。
 
 変更ファイル: `package.json`、`package-lock.json`。型エラーが実際に出た場合だけ対象ソース。
@@ -242,7 +244,7 @@ Sätteriで互換問題が観測された場合は、`@astrojs/markdown-remark@7
 | 日付 | 対象 | 状態 | 実施内容・証拠 | コミット・残課題 |
 | --- | --- | --- | --- | --- |
 | 2026-09-26 | 計画作成 | 完了 | ローカルコード・lock・設定とnpm metadata、公式移行ガイドを調査 | アップグレードは全Phase未着手 |
-| 2026-09-26 | Phase 0 | 作業中 | Node 24.1.0で更新前lockの `npm ci` とAstro 5.8.2のbuildが終了コード0。一時導入したcheck 0.9.10・TypeScript 5.9.3で17ファイルが0 errors・0 warnings・0 hints | 恒久的なcheck依存とscriptはPhase 1確定後に独立コミット化。更新前npm audit 42件を基準値として記録 |
+| 2026-09-26 | Phase 0 | 完了 | Node 24.1.0で更新前lockの `npm ci` とAstro 5.8.2のbuildが終了コード0。check 0.9.10・TypeScript 5.9.3を固定導入し、17ファイルが0 errors・0 warnings・0 hints。導入後buildも終了コード0 | Phase 1と分離してコミット。更新前npm audit 42件、導入後36件を記録 |
 | 2026-09-26 | Phase 1 | 完了 | Astro 5.18.2・MDX 4.3.14へ更新。Node 24.1.0で `npm ls`・buildが終了コード0、dev上の3ルートがHTTP 200。生成HTMLとブラウザー表示を確認 | `b902305`。`astro preview` は現Cloudflare adapterが未対応 |
 
 追記時は実行したPhase、Node/npm、コマンド終了コード、画面確認、変更した判断、コミットを記録する。途中終了は「検証待ち」「保留」とし、未実行項目のチェックを付けない。
