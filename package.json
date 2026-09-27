@@ -21,7 +21,6 @@
     "@astrojs/check": "0.9.10",
     "@tailwindcss/typography": "^0.5.16",
     "npm-check-updates": "^16.14.20",
-    "typescript": "5.9.3",
-    "wrangler": "^3.107.3"
+    "typescript": "5.9.3"
   }
 }

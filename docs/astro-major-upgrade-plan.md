@@ -9,7 +9,7 @@ Astro を **5.8.2 → 5.18.2 → 6.4.8 → 7.3.5** の順で更新し、メジ�
 - [x] 計画作成 — 状態: 完了。ローカルコードと公式一次情報を調査済み。
 - [x] Phase 0: 基準点と型検査 — 状態: 完了。`npm run check` を以降の共通検証に追加。
 - [x] Phase 1: Astro 5 系内の更新 — 状態: 完了。コミット `b902305`。
-- [ ] Phase 2: Cloudflare adapter の整理 — 状態: 作業中。adapterなしの本番デプロイまで確認済み。未使用と確認できたWranglerの削除を残す。
+- [x] Phase 2: Cloudflare adapter の整理 — 状態: 完了。adapterなしの本番デプロイと、未使用だったWranglerの削除後の再現ビルドを確認済み。
 - [ ] Phase 3: Tailwind 3 の PostCSS 接続 — 状態: 未着手。
 - [ ] Phase 4: Astro 5 → 6 — 状態: 未着手。
 - [ ] Phase 5: Astro 6 → 7 — 状態: 未着手。
@@ -28,7 +28,7 @@ Astro を **5.8.2 → 5.18.2 → 6.4.8 → 7.3.5** の順で更新し、メジ�
 | Typography | 宣言 `^0.5.16`、lock `0.5.16` | `package.json:20`、`package-lock.json:2175` |
 | Astro check | 宣言・lock `0.9.10` | `package.json`、`package-lock.json` |
 | TypeScript | 宣言・lock `5.9.3` | `package.json`、`package-lock.json` |
-| Wrangler | 直接依存 `3.107.3`を外部利用確認まで維持 | `package.json`、`package-lock.json` |
+| Wrangler | 追跡ファイル・Pages設定・デプロイログで不使用を確認して直接依存を削除済み | `package.json`、`package-lock.json`、Phase 2進捗ログ |
 | Node.js | 指定・検証環境 `24.1.0` | `.node-version:1`、`mise exec node@24.1.0 -- node -v` |
 | npm / lock形式 | 検証環境 `11.3.0` / lockfileVersion `3` | `mise exec node@24.1.0 -- npm -v`、`package-lock.json:4` |
 | 作業ツリー | `master`、`origin/master` より先行 | `git status --short --branch` |
@@ -123,18 +123,19 @@ npm run build
 
 ## Phase 2 — Cloudflare adapter の整理
 
-状態: 作業中。互換構成: Astro 5.18.2 + MDX 4.3.14、adapterなしの静的出力。adapter削除コミットの本番デプロイ成功まで確認済み。未使用と確認できたWranglerの削除を残す。
+状態: 完了。互換構成: Astro 5.18.2 + MDX 4.3.14、adapter・Wranglerなしの静的出力。adapter削除コミットの本番デプロイと、Wrangler削除後のクリーンな再現ビルドまで確認済み。
 
 - [x] 状態: 完了 — Cloudflare APIとデプロイログから、Pages、`npm run build`、`dist`、Node 24.1.0、GitHub `master` 自動デプロイを確認した。
 - [x] 状態: 完了 — `astro.config.mjs` のCloudflare importと `adapter: cloudflare()` を削除し、依存をuninstallした。
 - [x] 状態: 完了 — adapterが推移的に提供していたSharpの消失をクリーンな `npm ci` 後のbuildで検出し、Astro 5.18.2のoptional範囲に合う `sharp@0.34.5` を直接依存へ固定した。
 - [x] 状態: 完了 — `dist` を前後比較し、HTML・CSS・ClientRouter JS・最適化WebP・faviconが同一であることを確認した。adapter固有の `_worker.js`・`_routes.json` と未参照の元JPEGコピーだけが消えた。previewで3ページとfaviconがHTTP 200、存在しないパスが404。
-- [ ] 状態: 作業中 — 追跡ファイル、Pages設定、デプロイログのいずれにもWrangler利用がなく、ビルド時にも設定ファイルなしと確認できた。直接依存を追加の独立コミットで削除する。
+- [x] 状態: 完了 — 追跡ファイル、Pages設定、デプロイログのいずれにもWrangler利用がなく、ビルド時にも設定ファイルなしと確認できたため、直接依存を削除した。削除後の `npm ci`、`npm ls`、check、buildはいずれも終了コード0。
 
 変更ファイル: `astro.config.mjs`、`package.json`、`package-lock.json`。`astro:assets` の画像最適化を維持するため、Sharpを直接依存として含む。
 
 ```sh
 npm uninstall @astrojs/cloudflare
+npm uninstall wrangler
 npm ls
 npm run check
 npm run build
@@ -263,8 +264,9 @@ Sätteriで互換問題が観測された場合は、`@astrojs/markdown-remark@7
 | 2026-09-26 | Phase 0 | 完了 | Node 24.1.0で更新前lockの `npm ci` とAstro 5.8.2のbuildが終了コード0。check 0.9.10・TypeScript 5.9.3を固定導入し、17ファイルが0 errors・0 warnings・0 hints。導入後buildも終了コード0 | Phase 1と分離してコミット。更新前npm audit 42件、導入後36件を記録 |
 | 2026-09-26 | Phase 1 | 完了 | Astro 5.18.2・MDX 4.3.14へ更新。Node 24.1.0で `npm ls`・buildが終了コード0、dev上の3ルートがHTTP 200。生成HTMLとブラウザー表示を確認 | `b902305`。`astro preview` は現Cloudflare adapterが未対応 |
 | 2026-09-26 | 計画更新 | 完了 | Astro 6・7への移行完了時に新機能候補を記録し、Phase 5で優先順位付き提案を行う工程を追加 | 新機能採用は移行コミットに混ぜない |
-| 2026-09-27 | Phase 2 | 作業中 | サーバーAPI等の不使用を陽性対照付きで再確認。adapterを削除し、Sharp 0.34.5を直接依存化。クリーンな `npm ci`、check、画像最適化付きstatic build、成果物比較、previewの3ページ/404を検証 | `6bde41a`。Wrangler直接依存の削除を残す |
+| 2026-09-27 | Phase 2 | 完了 | サーバーAPI等の不使用を陽性対照付きで再確認。adapterを削除し、Sharp 0.34.5を直接依存化。クリーンな `npm ci`、check、画像最適化付きstatic build、成果物比較、previewの3ページ/404を検証 | adapter整理は `6bde41a`。Wrangler削除は別コミット |
 | 2026-09-27 | Phase 2 本番検証 | 完了 | Cloudflare APIでPages設定を読み取り、GitHub `master`、`npm run build`、`dist`、Functions不使用を確認。デプロイ `1577586b` はコミット `6bde41a`、production、deploy success。ログ上もNode 24.1.0でビルドし、Wrangler設定ファイルなしで配信成功 | adapterなしの静的配信契約を本番で確認。Wranglerは外部設定でも未使用と確定 |
+| 2026-09-27 | Phase 2 Wrangler整理 | 完了 | 未使用のWrangler 3.107.3を直接依存から削除。Node 24.1.0・npm 11.3.0で `npm ci`、`npm ls`、check、画像最適化付きstatic buildが終了コード0。checkは17ファイルで0 errors・0 warnings・0 hints、buildは全3ページを生成 | Phase 2完了。次はPhase 3のTailwind 3 PostCSS接続 |
 
 追記時は実行したPhase、Node/npm、コマンド終了コード、画面確認、変更した判断、コミットを記録する。途中終了は「検証待ち」「保留」とし、未実行項目のチェックを付けない。
 
