@@ -12,7 +12,7 @@
 - `npm run preview`: ビルド結果をローカルで確認します。
 - `npm run update`: `npm-check-updates` で minor 更新を反映し、依存関係を更新します。
 
-本番環境は `master` ブランチへの反映で自動デプロイされます。
+GitHub の `master` ブランチへ `push` すると、Cloudflare Pages の本番デプロイが自動で開始されます。ローカルコミットと `push` を別の操作として扱い、`push` はユーザーから明示的に依頼された場合だけ実行してください。
 
 ## Coding Style & Naming Conventions
 

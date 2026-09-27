@@ -9,7 +9,7 @@ Astro を **5.8.2 → 5.18.2 → 6.4.8 → 7.3.5** の順で更新し、メジ�
 - [x] 計画作成 — 状態: 完了。ローカルコードと公式一次情報を調査済み。
 - [x] Phase 0: 基準点と型検査 — 状態: 完了。`npm run check` を以降の共通検証に追加。
 - [x] Phase 1: Astro 5 系内の更新 — 状態: 完了。コミット `b902305`。
-- [ ] Phase 2: Cloudflare adapter の整理 — 状態: 検証待ち。ローカル検証は完了し、Cloudflareダッシュボード設定の確認を残す。
+- [ ] Phase 2: Cloudflare adapter の整理 — 状態: 作業中。adapterなしの本番デプロイまで確認済み。未使用と確認できたWranglerの削除を残す。
 - [ ] Phase 3: Tailwind 3 の PostCSS 接続 — 状態: 未着手。
 - [ ] Phase 4: Astro 5 → 6 — 状態: 未着手。
 - [ ] Phase 5: Astro 6 → 7 — 状態: 未着手。
@@ -42,9 +42,9 @@ Astro を **5.8.2 → 5.18.2 → 6.4.8 → 7.3.5** の順で更新し、メジ�
 | Image・ローカルJPEG | `src/pages/index.astro:7`、`:17`、`:132`、`src/layouts/ProfileMarkdownLayout.astro:23` |
 | ClientRouter・アバター遷移 | `src/layouts/Layout.astro:2`、`:38`、`src/pages/index.astro:23` |
 | Tailwindテーマ・typography・@apply | `tailwind.config.cjs:5`、`:7`、`:93`、`src/layouts/Layout.astro:53` |
-| 本番反映 | `master` の自動デプロイのみ記載。配信先設定は未確認（`README.md:24`） |
+| 本番反映 | Cloudflare Pages。GitHub `master` のpushで自動デプロイし、`npm run build` の `dist` を配信 |
 
-`git ls-files src public .github '*wrangler*'` でページ・コンポーネント・画像・faviconを列挙した。`src` と `astro.config.mjs` に対する次の検索では、`astro:transitions` と `<style>` の2行が検出され、サーバーAPI等は検出されなかった。この検索範囲外のダッシュボード設定までは証明しない。
+`git ls-files src public .github '*wrangler*'` でページ・コンポーネント・画像・faviconを列挙した。`src` と `astro.config.mjs` に対する次の検索では、`astro:transitions` と `<style>` の2行が検出され、サーバーAPI等は検出されなかった。Cloudflare側の設定はPhase 2の本番検証でAPIとデプロイログから別途確認した。
 
 ```sh
 rg -n '(Astro\.(glob|url|request|locals)|getStaticPaths|astro:content|astro:schema|astro:actions|astro:transitions|server:defer|prerender|experimental|<script|<style|href=.*#)' src astro.config.mjs --glob '!*.swo'
@@ -123,13 +123,13 @@ npm run build
 
 ## Phase 2 — Cloudflare adapter の整理
 
-状態: 検証待ち。互換構成: Astro 5.18.2 + MDX 4.3.14、adapterなしの静的出力。ローカル検証は完了し、Cloudflareダッシュボード設定の確認を残す。
+状態: 作業中。互換構成: Astro 5.18.2 + MDX 4.3.14、adapterなしの静的出力。adapter削除コミットの本番デプロイ成功まで確認済み。未使用と確認できたWranglerの削除を残す。
 
-- [ ] 状態: 未着手 — Cloudflare側のPages/Workers区分、build/deployコマンド、公開ディレクトリ、Nodeを読み取り確認する。
+- [x] 状態: 完了 — Cloudflare APIとデプロイログから、Pages、`npm run build`、`dist`、Node 24.1.0、GitHub `master` 自動デプロイを確認した。
 - [x] 状態: 完了 — `astro.config.mjs` のCloudflare importと `adapter: cloudflare()` を削除し、依存をuninstallした。
 - [x] 状態: 完了 — adapterが推移的に提供していたSharpの消失をクリーンな `npm ci` 後のbuildで検出し、Astro 5.18.2のoptional範囲に合う `sharp@0.34.5` を直接依存へ固定した。
 - [x] 状態: 完了 — `dist` を前後比較し、HTML・CSS・ClientRouter JS・最適化WebP・faviconが同一であることを確認した。adapter固有の `_worker.js`・`_routes.json` と未参照の元JPEGコピーだけが消えた。previewで3ページとfaviconがHTTP 200、存在しないパスが404。
-- [ ] 状態: 検証待ち — Wranglerは追跡ファイル内に利用箇所がないが、外部設定を確認するまで直接依存を維持する。不要と確認できた場合だけ追加の独立コミットで削除する。
+- [ ] 状態: 作業中 — 追跡ファイル、Pages設定、デプロイログのいずれにもWrangler利用がなく、ビルド時にも設定ファイルなしと確認できた。直接依存を追加の独立コミットで削除する。
 
 変更ファイル: `astro.config.mjs`、`package.json`、`package-lock.json`。`astro:assets` の画像最適化を維持するため、Sharpを直接依存として含む。
 
@@ -248,9 +248,9 @@ Sätteriで互換問題が観測された場合は、`@astrojs/markdown-remark@7
 ## リスクと未確認事項
 
 - [ ] 状態: 未着手 — 更新後のinstall・check・buildは未実施。metadata上の互換性を実動作成功と扱わない。
-- [ ] 状態: 未着手 — 調査シェルNodeと `.node-version` の不一致を解消する。デプロイ環境も別途確認する。
-- [ ] 状態: 未着手 — Cloudflareの配信形態と外部設定を確認する。adapter削除・保持の最終判断はPhase 2で証拠とともに記録する。
-- [ ] 状態: 未着手 — Wrangler直接依存の外部利用を確認する。未確認のまま削除しない。
+- [x] 状態: 完了 — ローカルとCloudflare PagesのデプロイログがともにNode 24.1.0であることを確認した。
+- [x] 状態: 完了 — Cloudflare PagesのGitHub連携、build command、公開ディレクトリ、Functions不使用、adapterなしの本番デプロイ成功をAPIで確認した。
+- [x] 状態: 完了 — 追跡ファイル、Pages設定、デプロイログにWrangler利用がないことを確認した。依存削除はPhase 2の残作業として扱う。
 - [ ] 状態: 未着手 — 既存の型エラー・警告を測定し、更新で生じたものと区別する。
 - [ ] 状態: 未着手 — MDX見出しID・空白・画像・遷移の前後比較を行う。生成hashやCSSシリアライズの差は表示不良と区別する。
 - [ ] 状態: 未着手 — 実行日が変わった場合は各固定バージョン・peer・公式移行規則を再確認する。
@@ -263,7 +263,8 @@ Sätteriで互換問題が観測された場合は、`@astrojs/markdown-remark@7
 | 2026-09-26 | Phase 0 | 完了 | Node 24.1.0で更新前lockの `npm ci` とAstro 5.8.2のbuildが終了コード0。check 0.9.10・TypeScript 5.9.3を固定導入し、17ファイルが0 errors・0 warnings・0 hints。導入後buildも終了コード0 | Phase 1と分離してコミット。更新前npm audit 42件、導入後36件を記録 |
 | 2026-09-26 | Phase 1 | 完了 | Astro 5.18.2・MDX 4.3.14へ更新。Node 24.1.0で `npm ls`・buildが終了コード0、dev上の3ルートがHTTP 200。生成HTMLとブラウザー表示を確認 | `b902305`。`astro preview` は現Cloudflare adapterが未対応 |
 | 2026-09-26 | 計画更新 | 完了 | Astro 6・7への移行完了時に新機能候補を記録し、Phase 5で優先順位付き提案を行う工程を追加 | 新機能採用は移行コミットに混ぜない |
-| 2026-09-27 | Phase 2 | 検証待ち | サーバーAPI等の不使用を陽性対照付きで再確認。adapterを削除し、Sharp 0.34.5を直接依存化。クリーンな `npm ci`、check、画像最適化付きstatic build、成果物比較、previewの3ページ/404を検証 | Cloudflare公式Pages手順の `npm run build`・`dist` と一致。実ダッシュボード設定とWrangler外部利用は未確認 |
+| 2026-09-27 | Phase 2 | 作業中 | サーバーAPI等の不使用を陽性対照付きで再確認。adapterを削除し、Sharp 0.34.5を直接依存化。クリーンな `npm ci`、check、画像最適化付きstatic build、成果物比較、previewの3ページ/404を検証 | `6bde41a`。Wrangler直接依存の削除を残す |
+| 2026-09-27 | Phase 2 本番検証 | 完了 | Cloudflare APIでPages設定を読み取り、GitHub `master`、`npm run build`、`dist`、Functions不使用を確認。デプロイ `1577586b` はコミット `6bde41a`、production、deploy success。ログ上もNode 24.1.0でビルドし、Wrangler設定ファイルなしで配信成功 | adapterなしの静的配信契約を本番で確認。Wranglerは外部設定でも未使用と確定 |
 
 追記時は実行したPhase、Node/npm、コマンド終了コード、画面確認、変更した判断、コミットを記録する。途中終了は「検証待ち」「保留」とし、未実行項目のチェックを付けない。
 
