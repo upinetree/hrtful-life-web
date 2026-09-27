@@ -252,7 +252,7 @@ Sätteriで互換問題が観測された場合は、`@astrojs/markdown-remark@7
 - [ ] 状態: 未着手 — 更新後のinstall・check・buildは未実施。metadata上の互換性を実動作成功と扱わない。
 - [x] 状態: 完了 — ローカルとCloudflare PagesのデプロイログがともにNode 24.1.0であることを確認した。
 - [x] 状態: 完了 — Cloudflare PagesのGitHub連携、build command、公開ディレクトリ、Functions不使用、adapterなしの本番デプロイ成功をAPIで確認した。
-- [x] 状態: 完了 — 追跡ファイル、Pages設定、デプロイログにWrangler利用がないことを確認した。依存削除はPhase 2の残作業として扱う。
+- [x] 状態: 完了 — 追跡ファイル、Pages設定、デプロイログにWrangler利用がないことを確認し、Phase 2で直接依存を削除した。
 - [ ] 状態: 未着手 — 既存の型エラー・警告を測定し、更新で生じたものと区別する。
 - [ ] 状態: 未着手 — MDX見出しID・空白・画像・遷移の前後比較を行う。生成hashやCSSシリアライズの差は表示不良と区別する。
 - [ ] 状態: 未着手 — 実行日が変わった場合は各固定バージョン・peer・公式移行規則を再確認する。
