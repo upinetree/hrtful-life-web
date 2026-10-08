@@ -10,7 +10,7 @@ Astro を **5.8.2 → 5.18.2 → 6.4.8 → 7.3.5** の順で更新し、メジ�
 - [x] Phase 0: 基準点と型検査 — 状態: 完了。`npm run check` を以降の共通検証に追加。
 - [x] Phase 1: Astro 5 系内の更新 — 状態: 完了。コミット `b902305`。
 - [x] Phase 2: Cloudflare adapter の整理 — 状態: 完了。adapterなしの本番デプロイと、未使用だったWranglerの削除後の再現ビルドを確認済み。
-- [ ] Phase 3: Tailwind 3 の PostCSS 接続 — 状態: 検証待ち。実装・自動検証・成果物比較は完了し、PC・モバイルの目視確認を残す。
+- [x] Phase 3: Tailwind 3 の PostCSS 接続 — 状態: 完了。実装・自動検証・成果物比較・PC/モバイルの目視確認を完了。コミット `a35e1b5`。
 - [ ] Phase 4: Astro 5 → 6 — 状態: 未着手。
 - [ ] Phase 5: Astro 6 → 7 — 状態: 未着手。
 
@@ -151,12 +151,12 @@ npm run preview
 
 ## Phase 3 — Tailwind 3 の PostCSS 接続
 
-状態: 検証待ち。互換構成: Astro 5.18.2、Tailwind CSS 3.4.17、Typography 0.5.16を維持。PostCSS 8.5.4・Autoprefixer 10.4.21を直接依存に固定した。実装・自動検証・成果物比較は完了し、PC・モバイルの目視確認を残す。
+状態: 完了。互換構成: Astro 5.18.2、Tailwind CSS 3.4.17、Typography 0.5.16を維持。PostCSS 8.5.4・Autoprefixer 10.4.21を直接依存に固定し、自動検証・成果物比較・PC/モバイルの目視確認を完了した。
 
 - [x] 状態: 完了 — `postcss.config.cjs` にTailwindとAutoprefixerを登録した。
 - [x] 状態: 完了 — `src/styles/global.css` に `@tailwind base;`、`@tailwind components;`、`@tailwind utilities;` を置き、`Layout.astro` からimportした。
 - [x] 状態: 完了 — `astro.config.mjs` のTailwind import・`tailwind()` と `@astrojs/tailwind` 依存を削除した。
-- [ ] 状態: 検証待ち — CSS成果物ではテーマ・typography・`@apply`・hover・レスポンシブ規則の維持を確認済み。実装と自動検証結果は独立コミットにし、PC・モバイルの目視確認後にPhaseを完了する。
+- [x] 状態: 完了 — CSS成果物でテーマ・typography・`@apply`・hover・レスポンシブ規則の維持を確認し、PC・モバイルでも表示と遷移に問題がないことを目視確認した。
 
 変更ファイル: `package.json`、`package-lock.json`、`astro.config.mjs`、新規 `postcss.config.cjs`、新規 `src/styles/global.css`、`src/layouts/Layout.astro`。`tailwind.config.cjs` は維持。
 
@@ -268,7 +268,7 @@ Sätteriで互換問題が観測された場合は、`@astrojs/markdown-remark@7
 | 2026-09-27 | Phase 2 | 完了 | サーバーAPI等の不使用を陽性対照付きで再確認。adapterを削除し、Sharp 0.34.5を直接依存化。クリーンな `npm ci`、check、画像最適化付きstatic build、成果物比較、previewの3ページ/404を検証 | adapter整理は `6bde41a`。Wrangler削除は別コミット |
 | 2026-09-27 | Phase 2 本番検証 | 完了 | Cloudflare APIでPages設定を読み取り、GitHub `master`、`npm run build`、`dist`、Functions不使用を確認。デプロイ `1577586b` はコミット `6bde41a`、production、deploy success。ログ上もNode 24.1.0でビルドし、Wrangler設定ファイルなしで配信成功 | adapterなしの静的配信契約を本番で確認。Wranglerは外部設定でも未使用と確定 |
 | 2026-09-27 | Phase 2 Wrangler整理 | 完了 | 未使用のWrangler 3.107.3を直接依存から削除。Node 24.1.0・npm 11.3.0で `npm ci`、`npm ls`、check、画像最適化付きstatic buildが終了コード0。checkは17ファイルで0 errors・0 warnings・0 hints、buildは全3ページを生成 | Phase 2完了。次はPhase 3のTailwind 3 PostCSS接続 |
-| 2026-09-27 | Phase 3 | 検証待ち | Tailwind integrationを公式PostCSS接続へ移行。Node 24.1.0・npm 11.3.0で `npm ci`、`npm ls`、check、buildが終了コード0。checkは18ファイルで診断0、previewは3ページとfaviconが200・未知パスが404。旧CSS本体と新CSSは、HTMLから外部CSSへ移った2規則を除いて一致 | 実装を独立コミットし、PC・モバイルの目視確認後にPhase 3を完了する |
+| 2026-09-27 | Phase 3 | 完了 | Tailwind integrationを公式PostCSS接続へ移行。Node 24.1.0・npm 11.3.0で `npm ci`、`npm ls`、check、buildが終了コード0。checkは18ファイルで診断0、previewは3ページとfaviconが200・未知パスが404。旧CSS本体と新CSSは、HTMLから外部CSSへ移った2規則を除いて一致。PC・モバイルで表示と遷移を目視確認 | `a35e1b5`。Phase 4のAstro 5→6へ進む |
 
 追記時は実行したPhase、Node/npm、コマンド終了コード、画面確認、変更した判断、コミットを記録する。途中終了は「検証待ち」「保留」とし、未実行項目のチェックを付けない。
 
