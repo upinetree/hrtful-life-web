@@ -11,8 +11,8 @@ Astro を **5.8.2 → 5.18.2 → 6.4.8 → 7.3.7** の順で更新し、メジ�
 - [x] Phase 1: Astro 5 系内の更新 — 状態: 完了。コミット `b902305`。
 - [x] Phase 2: Cloudflare adapter の整理 — 状態: 完了。adapterなしの本番デプロイと、未使用だったWranglerの削除後の再現ビルドを確認済み。
 - [x] Phase 3: Tailwind 3 の PostCSS 接続 — 状態: 完了。実装・自動検証・成果物比較・PC/モバイルの目視確認を完了。コミット `a35e1b5`。
-- [x] Phase 4: Astro 5 → 6 — 状態: 完了。依存更新・自動検証・成果物比較・新機能調査・PC/モバイルの目視確認を完了。
-- [ ] Phase 5: Astro 6 → 7 — 状態: 未着手。
+- [x] Phase 4: Astro 5 → 6 — 状態: 完了。依存更新・自動検証・成果物比較・新機能調査・PC/モバイルの目視確認を完了。コミット `aafef02`。
+- [x] Phase 5: Astro 6 → 7 — 状態: 完了。依存更新・自動検証・成果物比較・新機能調査・PC/モバイルの目視確認を完了。
 
 ## 現状スナップショット
 
@@ -20,22 +20,22 @@ Astro を **5.8.2 → 5.18.2 → 6.4.8 → 7.3.7** の順で更新し、メジ�
 
 | 項目 | 宣言・実値 | 根拠 |
 | --- | --- | --- |
-| Astro | 宣言・lock `6.4.8` | `package.json`、`package-lock.json` |
+| Astro | 宣言・lock `7.3.7` | `package.json`、`package-lock.json` |
 | Cloudflare adapter | 削除済み | `astro.config.mjs`、`package.json` |
-| MDX | 宣言・lock `6.0.3` | `package.json`、`package-lock.json` |
+| MDX | 宣言・lock `8.0.3` | `package.json`、`package-lock.json` |
 | Tailwind integration | 削除済み。Tailwind 3をPostCSSから直接読み込む | `astro.config.mjs`、`postcss.config.cjs` |
 | Tailwind CSS | 宣言 `^3.4.17`、lock `3.4.17` | `package.json:17`、`package-lock.json` |
 | PostCSS / Autoprefixer | 宣言・lock `8.5.4` / `10.4.21` | `package.json`、`package-lock.json` |
 | Typography | 宣言 `^0.5.16`、lock `0.5.16` | `package.json:21`、`package-lock.json` |
 | Astro check | 宣言・lock `0.9.10` | `package.json`、`package-lock.json` |
 | TypeScript | 宣言・lock `5.9.3` | `package.json`、`package-lock.json` |
-| Vite | Astroの推移依存 `7.3.7` | `package-lock.json`、`npm ls` |
+| Vite | Astroの推移依存 `8.3.3` | `package-lock.json`、`npm ls` |
 | Wrangler | 追跡ファイル・Pages設定・デプロイログで不使用を確認して直接依存を削除済み | `package.json`、`package-lock.json`、Phase 2進捗ログ |
 | Node.js | 指定・検証環境 `24.1.0` | `.node-version:1`、`mise exec node@24.1.0 -- node -v` |
 | npm / lock形式 | 検証環境 `11.3.0` / lockfileVersion `3` | `mise exec node@24.1.0 -- npm -v`、`package-lock.json:4` |
 | 作業ツリー | `master`、`origin/master` より先行 | `git status --short --branch` |
 
-設定は `astro.config.mjs` の `mdx()` と `postcss.config.cjs` のTailwind・Autoprefixer。`output` 未指定の既定値は `static`（インストール済み `node_modules/astro/dist/core/config/schemas/base.js:110`）。`tsconfig.json:2` は `astro/tsconfigs/base`。`package.json:7` の build は `astro build` であり、型検査ではない。
+設定は `astro.config.mjs` の `mdx()`・`compressHTML: true` と `postcss.config.cjs` のTailwind・Autoprefixer。`output` 未指定の既定値は `static`（インストール済み `node_modules/astro/dist/core/config/schemas/base.js:46`）。`tsconfig.json:2` は `astro/tsconfigs/base`。`package.json:7` の build は `astro build` であり、型検査ではない。
 
 | 利用機能 | コード根拠・検証対象 |
 | --- | --- |
@@ -205,15 +205,15 @@ npm run preview
 
 ## Phase 5 — Astro 6 から 7
 
-状態: 未着手。互換構成: Astro 7.3.7 + MDX 8.0.3 + 依存としてのSätteri 0.4.3、Node 24.1.0。
+状態: 完了。互換構成: Astro 7.3.7 + MDX 8.0.3 + 依存としてのSätteri 0.4.3、Node 24.1.0。依存更新・自動検証・成果物比較・新機能調査・PC/モバイルの目視確認を完了した。
 
-- [ ] 状態: 未着手 — AstroとMDXを互換バージョンへ同時更新する。
-- [ ] 状態: 未着手 — `astro.config.mjs` に `compressHTML: true` を追加して従来の空白処理を維持する。
-- [ ] 状態: 未着手 — Rust compilerで全テンプレートをbuildし、実エラーが出た箇所だけ修正する。
-- [ ] 状態: 未着手 — SätteriでMDXのfrontmatter layout、`components` によるリンク差し替え、日本語・絵文字・リストを比較する。
-- [ ] 状態: 未着手 — 共通検証、クリーン環境での再現、配信先設定との照合を完了し、7のコミットを確定する。
-- [ ] 状態: 未着手 — Astro 7で利用可能になった新機能を公式リリース情報から調査し、本リポジトリに適合する候補を新機能候補表へ追記する。
-- [ ] 状態: 未着手 — Astro 6・7の候補を統合し、効果・導入コスト・リスクで優先順位を付けてユーザーへ提案する。採用する機能はアップグレード完了後の別タスク・別コミットにする。
+- [x] 状態: 完了 — Astro 7.3.7とMDX 8.0.3を同時更新し、npm registryでlatest・peer・Node・Vite・Sätteri要件を再確認した。
+- [x] 状態: 完了 — `astro.config.mjs` に `compressHTML: true` を追加し、アイコンと隣接テキストの空白がAstro 6と同様に残ることを成果物で確認した。
+- [x] 状態: 完了 — Rust compilerで全テンプレートをbuildし、タグ閉じやHTML構造にエラーがないことを確認した。
+- [x] 状態: 完了 — SätteriでMDXのfrontmatter layout、`components` による外部リンク差し替え、日本語・絵文字の見出しID、入れ子リストをAstro 6成果物と比較した。
+- [x] 状態: 完了 — `npm ci`、`npm ls`、check/build、全3ページのHTTP応答、成果物のDOM・CSS主要規則・画像hashを確認し、PC/モバイルの表示とClientRouter遷移にも問題がないことを目視確認した。
+- [x] 状態: 完了 — Astro 7.0〜7.3の公式リリース情報から、本リポジトリに適合する新機能候補を新機能候補表へ追記した。
+- [x] 状態: 完了 — Astro 6・7の候補を効果・導入コスト・リスクで分類した。採用する機能はアップグレード完了後の別タスク・別コミットにする。
 
 変更ファイル: `package.json`、`package-lock.json`、`astro.config.mjs`、実際に修正が必要となったテンプレートのみ。
 
@@ -243,12 +243,13 @@ Sätteriで互換問題が観測された場合は、`@astrojs/markdown-remark@7
 
 | 導入メジャー | 新機能 | 適合する箇所・用途 | 期待する効果 | 導入コスト・リスク | 最終提案 |
 | --- | --- | --- | --- | --- | --- |
-| Astro 6 | Fonts API | `Layout.astro` がGoogle Fontsを3本の外部stylesheetで読み込む箇所 | フォントの自己ホスト、preload、fallback最適化、閲覧者のGoogle接続削減 | 3書体・weight・emojiの対応確認とTailwind fontFamilyのCSS変数移行が必要 | Phase 5で判断 |
-| Astro 6 | Content Security Policy API | ClientRouterとinline styleを含む全3ページ | Astro生成script/styleのhashを自動生成し、XSS耐性を高める | 現在のGoogle Fonts外部stylesheetは標準設定だけでは扱えないため、Fonts API移行との順序設計が必要 | Phase 5で判断 |
-| Astro 6.4 | Sätteri Markdown processor | `src/pages/me.mdx` のMDX処理 | Astro 7で既定化されるprocessorを先行検証できる | MDXは1ページだけで速度効果が小さく、layout・components差し替えの互換確認が必要 | Phase 5で判断 |
-| Astro 7 | 移行完了後に調査 | 未評価 | 未評価 | 未評価 | Phase 5で判断 |
+| Astro 6 | Fonts API | `Layout.astro` がGoogle Fontsを3本の外部stylesheetで読み込む箇所 | フォントの自己ホスト、preload、fallback最適化、閲覧者のGoogle接続削減 | 3書体・weight・emojiの対応確認とTailwind fontFamilyのCSS変数移行が必要 | **推奨**。最初の採用候補 |
+| Astro 6 / 7.1 | Content Security Policy APIと要素・属性別directive | ClientRouterとinline styleを含む全3ページ | Astro生成script/styleのhashと細かなdirectiveでXSS耐性を高める | 現在のGoogle Fonts外部stylesheetは標準設定だけでは扱えないため、Fonts API移行後にCSPレポートと画面遷移を検証する | **条件付き**。Fonts APIの後に採用 |
+| Astro 6.4 / 7 | Sätteri Markdown processor | `src/pages/me.mdx` のMDX処理 | Rust実装の既定processorへ移行 | Astro 7更新で既定化済み。layout・components差し替え・日本語見出しを検証済み | **対応済み**。追加作業なし |
+| Astro 7 / 7.2 / 7.3 | 管理対象のbackground dev/preview server・health endpoint・複数server | エージェントによる表示検証と並行worktree | 起動完了待ち、PID・ログ・停止、重複回避をCLIへ委ねられる | managed sandboxでは自動background起動した子プロセスがportを開けないため、`--ignore-lock` と権限昇格が必要 | **条件付き**。ローカル運用へ必要時に追記 |
+| Astro 7.2 | Experimental incremental static builds | 3ページのstatic build | 将来ページ数が大幅に増えた場合の再ビルド短縮 | 現在のbuildは約1秒で、実験機能の状態管理コストが効果を上回る | **見送り** |
 
-最終提案では候補を「推奨」「条件付き」「見送り」に分類し、採用理由だけでなく見送る理由も残す。提案時点では実装せず、ユーザーが選んだ機能だけを個別の作業単位として計画する。
+最終提案は、(1) Fonts APIを先に導入、(2) 外部Google Fonts依存を解消した後にCSPを導入、(3) background serverは運用上必要になった時だけ手順化、の順とする。SätteriはAstro 7移行で対応済み。advanced routing・route cache・JSON loggingは3ページのstatic配信には利用箇所がなく、incremental static buildも現状の約1秒buildには過剰なため見送る。提案時点では新機能を実装せず、ユーザーが選んだ機能だけを個別の作業単位として計画する。
 
 ## リスクと未確認事項
 
@@ -259,6 +260,8 @@ Sätteriで互換問題が観測された場合は、`@astrojs/markdown-remark@7
 - [x] 状態: 完了 — Astro 6更新前後のcheckがともに診断0であることを確認した。
 - [x] 状態: 完了 — MDX見出しID・DOM・CSS・画像の前後比較に加え、PC/モバイルの表示とClientRouter遷移を目視確認した。
 - [x] 状態: 完了 — 2026-10-08に6系・7系の固定バージョン、peer、Node要件、公式v6移行規則を再確認した。
+- [x] 状態: 完了 — Astro 7更新後のクリーンな `npm ci`、`npm ls`、check、buildと成果物比較を実行した。
+- [x] 状態: 完了 — Astro 7成果物のDOM構造・本文、MDX、主要CSS規則、画像hashを比較し、PC/モバイルの表示とClientRouter遷移を目視確認した。
 
 ## 進捗ログ
 
@@ -272,7 +275,8 @@ Sätteriで互換問題が観測された場合は、`@astrojs/markdown-remark@7
 | 2026-09-27 | Phase 2 本番検証 | 完了 | Cloudflare APIでPages設定を読み取り、GitHub `master`、`npm run build`、`dist`、Functions不使用を確認。デプロイ `1577586b` はコミット `6bde41a`、production、deploy success。ログ上もNode 24.1.0でビルドし、Wrangler設定ファイルなしで配信成功 | adapterなしの静的配信契約を本番で確認。Wranglerは外部設定でも未使用と確定 |
 | 2026-09-27 | Phase 2 Wrangler整理 | 完了 | 未使用のWrangler 3.107.3を直接依存から削除。Node 24.1.0・npm 11.3.0で `npm ci`、`npm ls`、check、画像最適化付きstatic buildが終了コード0。checkは17ファイルで0 errors・0 warnings・0 hints、buildは全3ページを生成 | Phase 2完了。次はPhase 3のTailwind 3 PostCSS接続 |
 | 2026-09-27 | Phase 3 | 完了 | Tailwind integrationを公式PostCSS接続へ移行。Node 24.1.0・npm 11.3.0で `npm ci`、`npm ls`、check、buildが終了コード0。checkは18ファイルで診断0、previewは3ページとfaviconが200・未知パスが404。旧CSS本体と新CSSは、HTMLから外部CSSへ移った2規則を除いて一致。PC・モバイルで表示と遷移を目視確認 | `a35e1b5`。Phase 4のAstro 5→6へ進む |
-| 2026-10-08 | Phase 4 | 完了 | Astro 6.4.8・MDX 6.0.3へ更新。Node 24.1.0・npm 11.3.0で `npm ci`、`npm ls`、check、画像最適化付きstatic buildが終了コード0。previewは3ページとfaviconが200・未知パスが404。旧成果物との比較でDOM構造・本文、MDX見出しID、画像hashを維持し、CSS差は`@media`内の空白圧縮のみ。PC・モバイルで表示とClientRouter遷移を目視確認 | Phase 4完了。次はPhase 5のAstro 6→7へ進む |
+| 2026-10-08 | Phase 4 | 完了 | Astro 6.4.8・MDX 6.0.3へ更新。Node 24.1.0・npm 11.3.0で `npm ci`、`npm ls`、check、画像最適化付きstatic buildが終了コード0。previewは3ページとfaviconが200・未知パスが404。旧成果物との比較でDOM構造・本文、MDX見出しID、画像hashを維持し、CSS差は`@media`内の空白圧縮のみ。PC・モバイルで表示と遷移を目視確認 | `aafef02`。Phase 4完了 |
+| 2026-10-08 | Phase 5 | 完了 | Astro 7.3.7・MDX 8.0.3へ更新し、従来の空白処理を明示。Node 24.1.0・npm 11.3.0でクリーンな `npm ci`、`npm ls`、check、Rust compiler・Sätteri・Vite 8によるstatic buildが終了コード0。previewは3ページとfaviconが200・未知パスが404。Astro 6成果物との比較でDOM構造・本文、MDX見出しID・外部リンク差し替え、画像hash、主要CSS規則を維持。PC・モバイルで表示とClientRouter遷移を目視確認 | Phase 5完了。Astroメジャーアップグレード計画を完遂 |
 
 追記時は実行したPhase、Node/npm、コマンド終了コード、画面確認、変更した判断、コミットを記録する。途中終了は「検証待ち」「保留」とし、未実行項目のチェックを付けない。
 
@@ -285,6 +289,7 @@ Sätteriで互換問題が観測された場合は、`@astrojs/markdown-remark@7
 - [Astro 6移行ガイド][upgrade-v6] / [Astro 7移行ガイド][upgrade-v7]
 - [Astro 6.0リリース][astro-6-release] / [Astro 6.4リリース][astro-64-release]
 - [Astro 6 Fonts API][astro-6-fonts] / [Astro 6 CSP設定][astro-6-csp]
+- [Astro 7.0リリース][astro-7-release] / [Astro 7.1][astro-71-release] / [Astro 7.2][astro-72-release] / [Astro 7.3][astro-73-release]
 - [Astro型検査][typescript-guide] / [check 0.9.10 metadata][npm-check]
 - [Cloudflare PagesのAstro配信手順][cloudflare-pages]
 
@@ -299,6 +304,10 @@ Sätteriで互換問題が観測された場合は、`@astrojs/markdown-remark@7
 [astro-64-release]: https://astro.build/blog/astro-640/
 [astro-6-fonts]: https://v6.docs.astro.build/en/reference/font-provider-reference/
 [astro-6-csp]: https://v6.docs.astro.build/en/reference/configuration-reference/#securitycsp
+[astro-7-release]: https://astro.build/blog/astro-7/
+[astro-71-release]: https://astro.build/blog/astro-710/
+[astro-72-release]: https://astro.build/blog/astro-720/
+[astro-73-release]: https://astro.build/blog/astro-730/
 [cloudflare-upgrade]: https://docs.astro.build/en/guides/integrations-guide/cloudflare/#upgrading-to-v13-and-astro-6
 [cloudflare-pages]: https://developers.cloudflare.com/pages/framework-guides/deploy-an-astro-site/
 [tailwind-postcss]: https://v3.tailwindcss.com/docs/installation/using-postcss
