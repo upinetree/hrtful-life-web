@@ -251,6 +251,49 @@ Sätteriで互換問題が観測された場合は、`@astrojs/markdown-remark@7
 
 最終提案は、(1) Fonts APIを先に導入、(2) 外部Google Fonts依存を解消した後にCSPを導入、(3) background serverは運用上必要になった時だけ手順化、の順とする。SätteriはAstro 7移行で対応済み。advanced routing・route cache・JSON loggingは3ページのstatic配信には利用箇所がなく、incremental static buildも現状の約1秒buildには過剰なため見送る。提案時点では新機能を実装せず、ユーザーが選んだ機能だけを個別の作業単位として計画する。
 
+### 次期タスク案 — Fonts API
+
+Astro Fonts APIは、フォントprovider・使用するweight/style・fallback・CSS変数を `astro.config.mjs` で宣言し、Astroがビルド時にフォントを取得・キャッシュして静的アセットとして配信する仕組み。現在は閲覧者のブラウザーがGoogleへ直接接続するが、移行後はビルド時に取得したファイルをCloudflare Pagesから配信する。
+
+```text
+現在:   閲覧者 → fonts.googleapis.com / fonts.gstatic.com
+移行後: Astro build → providerから取得・キャッシュ
+        閲覧者 → Cloudflare Pagesの /_astro/fonts
+```
+
+現状は `src/layouts/Layout.astro:23-36` で以下を外部stylesheetとして読み込み、`tailwind.config.cjs:8-10` でフォント名を直接指定している。
+
+- Noto Sans JP: 400 / 600 / 700
+- Noto Color Emoji
+- Moirai One: `HRTful.life` に必要な文字だけを `text` queryで取得
+
+期待する効果:
+
+- 閲覧時のGoogleへの第三者通信をなくし、プライバシーと配信の自己完結性を高める。
+- Google Fontsの応答遅延・障害からページ表示を切り離し、Cloudflareとブラウザーの静的アセットキャッシュを利用する。
+- 必要なweight・style・formatだけを宣言し、重要なフォントだけをpreloadする。
+- primary fontに近いoptimized fallbackを生成し、フォント読込時のレイアウトシフトを抑える。
+- フォント設定とTailwindの `fontFamily` をAstro生成のCSS変数で接続し、設定箇所を明確にする。
+
+実装順:
+
+1. 移行前のフォントrequest、転送量、表示、computed `font-family`、レイアウトシフトを記録する。
+2. `astro.config.mjs` に3書体を登録し、`Layout.astro` に `<Font />` を配置する。
+3. Tailwind 3の `fontFamily.sans` と `fontFamily.brand` をAstroのCSS変数へ切り替える。
+4. Google Fonts向けの3 stylesheetと2 preconnectを削除し、生成HTMLにGoogle Fontsへの接続が残らないことを確認する。
+5. `npm ci`、`npm ls`、check、build、preview、成果物比較、PC/モバイルの目視確認を行う。
+
+重点確認:
+
+- Noto Sans JPの400 / 600 / 700が意図どおり生成・適用されること。
+- Noto Color Emojiのカラー表示とfallback順が維持されること。
+- Moirai Oneで `HRTful.life` が欠けず、現在の `text=HRTful.life` 相当の軽量性を維持できること。
+- 日本語フォントの自己ホスト化で転送量が過度に増えないこと。全グリフを無条件に同梱せず、providerが生成するファイル数・総容量・Unicode rangeを実測する。
+- preloadはabove-the-foldに必須なファイルへ限定し、不要なweightや絵文字フォントを先読みしないこと。
+- 初回buildでproviderへのネットワーク接続が必要になる前提と、`.astro/fonts`・`node_modules/.astro/fonts` のキャッシュ挙動を確認すること。
+
+成功条件: 閲覧時のGoogle Fonts向けrequestが0件で、3書体・指定weight・emoji・brand表示を維持し、フォント転送量とレイアウトシフトが許容範囲に収まる。ロールバック境界: Fonts API移行コミット。CSP導入はこの移行を本番確認した後の別コミットとする。[Astro Fontsガイド][astro-fonts-guide]
+
 ## リスクと未確認事項
 
 - [x] 状態: 完了 — Astro 6更新後の `npm ci`、`npm ls`、check、buildを実行し、metadata上の互換性と実動作を区別して確認した。
@@ -304,6 +347,7 @@ Sätteriで互換問題が観測された場合は、`@astrojs/markdown-remark@7
 [astro-64-release]: https://astro.build/blog/astro-640/
 [astro-6-fonts]: https://v6.docs.astro.build/en/reference/font-provider-reference/
 [astro-6-csp]: https://v6.docs.astro.build/en/reference/configuration-reference/#securitycsp
+[astro-fonts-guide]: https://docs.astro.build/en/guides/fonts/
 [astro-7-release]: https://astro.build/blog/astro-7/
 [astro-71-release]: https://astro.build/blog/astro-710/
 [astro-72-release]: https://astro.build/blog/astro-720/
