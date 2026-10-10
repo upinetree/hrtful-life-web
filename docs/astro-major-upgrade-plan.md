@@ -249,9 +249,17 @@ Sätteriで互換問題が観測された場合は、`@astrojs/markdown-remark@7
 | Astro 7 / 7.2 / 7.3 | 管理対象のbackground dev/preview server・health endpoint・複数server | エージェントによる表示検証と並行worktree | 起動完了待ち、PID・ログ・停止、重複回避をCLIへ委ねられる | managed sandboxでは自動background起動した子プロセスがportを開けないため、`--ignore-lock` と権限昇格が必要 | **条件付き**。ローカル運用へ必要時に追記 |
 | Astro 7.2 | Experimental incremental static builds | 3ページのstatic build | 将来ページ数が大幅に増えた場合の再ビルド短縮 | 現在のbuildは約1秒で、実験機能の状態管理コストが効果を上回る | **見送り** |
 
-最終提案は、(1) Fonts APIを先に導入、(2) 外部Google Fonts依存を解消した後にCSPを導入、(3) background serverは運用上必要になった時だけ手順化、の順とする。SätteriはAstro 7移行で対応済み。advanced routing・route cache・JSON loggingは3ページのstatic配信には利用箇所がなく、incremental static buildも現状の約1秒buildには過剰なため見送る。提案時点では新機能を実装せず、ユーザーが選んだ機能だけを個別の作業単位として計画する。
+最終提案は、(1) Fonts APIを先に導入、(2) 外部Google Fonts依存を解消した後にCSPを導入、(3) background serverは運用上必要になった時だけ手順化、の順とする。SätteriはAstro 7移行で対応済み。advanced routing・route cache・JSON loggingは3ページのstatic配信には利用箇所がなく、incremental static buildも現状の約1秒buildには過剰なため見送る。Fonts APIは以下の個別タスクとして実装を開始し、CSPは本番確認後の別コミットとする。
 
 ### 次期タスク案 — Fonts API
+
+状態: 検証待ち。ローカル実装と固定Nodeでの自動検証は完了し、previewのHTTP確認と本番反映後のPC・モバイル目視確認を残している。
+
+- [x] 状態: 完了 — Google providerでNoto Sans JP・Noto Color Emoji・Moirai Oneを登録し、`<Font />` とTailwindのCSS変数を接続した。
+- [x] 状態: 完了 — `src` 配下のAstro・Markdownソースからglyphを収集してGoogle providerのsubsetを指定し、生成フォントを3ファイル・168,268 bytesまで縮小した。生成HTMLにGoogle Fontsの外部URLは残っていない。
+- [x] 状態: 完了 — Node 24.1.0・npm 11.3.0で `npm run check` と実フォント取得付き `npm run build` が終了コード0。checkは0 errors・0 warnings・0 hints。
+- [ ] 状態: 検証待ち — previewの3ページHTTP応答、フォント適用、PC・モバイル表示とClientRouter遷移を確認する。
+- [ ] 状態: 保留 — 本番デプロイ後にGoogle向けrequestが0件であることと転送量を確認し、完了へ更新する。
 
 Astro Fonts APIは、フォントprovider・使用するweight/style・fallback・CSS変数を `astro.config.mjs` で宣言し、Astroがビルド時にフォントを取得・キャッシュして静的アセットとして配信する仕組み。現在は閲覧者のブラウザーがGoogleへ直接接続するが、移行後はビルド時に取得したファイルをCloudflare Pagesから配信する。
 
@@ -320,6 +328,7 @@ Astro Fonts APIは、フォントprovider・使用するweight/style・fallback�
 | 2026-09-27 | Phase 3 | 完了 | Tailwind integrationを公式PostCSS接続へ移行。Node 24.1.0・npm 11.3.0で `npm ci`、`npm ls`、check、buildが終了コード0。checkは18ファイルで診断0、previewは3ページとfaviconが200・未知パスが404。旧CSS本体と新CSSは、HTMLから外部CSSへ移った2規則を除いて一致。PC・モバイルで表示と遷移を目視確認 | `a35e1b5`。Phase 4のAstro 5→6へ進む |
 | 2026-10-08 | Phase 4 | 完了 | Astro 6.4.8・MDX 6.0.3へ更新。Node 24.1.0・npm 11.3.0で `npm ci`、`npm ls`、check、画像最適化付きstatic buildが終了コード0。previewは3ページとfaviconが200・未知パスが404。旧成果物との比較でDOM構造・本文、MDX見出しID、画像hashを維持し、CSS差は`@media`内の空白圧縮のみ。PC・モバイルで表示と遷移を目視確認 | `aafef02`。Phase 4完了 |
 | 2026-10-08 | Phase 5 | 完了 | Astro 7.3.7・MDX 8.0.3へ更新し、従来の空白処理を明示。Node 24.1.0・npm 11.3.0でクリーンな `npm ci`、`npm ls`、check、Rust compiler・Sätteri・Vite 8によるstatic buildが終了コード0。previewは3ページとfaviconが200・未知パスが404。Astro 6成果物との比較でDOM構造・本文、MDX見出しID・外部リンク差し替え、画像hash、主要CSS規則を維持。PC・モバイルで表示とClientRouter遷移を目視確認 | Phase 5完了。Astroメジャーアップグレード計画を完遂 |
+| 2026-10-10 | Fonts API | 検証待ち | Astro 7.3.7のGoogle providerで3書体を自己ホスト化。glyph subset後の生成フォントは3ファイル・168,268 bytes。Node 24.1.0・npm 11.3.0でcheck（0 errors・0 warnings・0 hints）と実フォント取得付きbuildが終了コード0。生成HTMLにGoogle Fonts外部URLなし | ローカル実装済み。preview・本番配信・画面確認待ち |
 
 追記時は実行したPhase、Node/npm、コマンド終了コード、画面確認、変更した判断、コミットを記録する。途中終了は「検証待ち」「保留」とし、未実行項目のチェックを付けない。
 

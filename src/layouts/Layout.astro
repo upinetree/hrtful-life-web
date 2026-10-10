@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from "astro:transitions";
+import { Font } from "astro:assets";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import "../styles/global.css";
@@ -20,20 +21,9 @@ const titlePrefix = "HRTful Life";
     <meta name="description" content="A portal site for Takuya Matsumoto" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Moirai+One&display=swap&text=HRTful.life"
-      rel="stylesheet"
-    />
+    <Font cssVariable="--font-noto-sans-jp" />
+    <Font cssVariable="--font-noto-color-emoji" />
+    <Font cssVariable="--font-moirai-one" />
     <meta name="generator" content={Astro.generator} />
     <title>{titlePrefix} - {title}</title>
     <ClientRouter />
