@@ -253,13 +253,13 @@ Sätteriで互換問題が観測された場合は、`@astrojs/markdown-remark@7
 
 ### 次期タスク案 — Fonts API
 
-状態: 検証待ち。ローカル実装と固定Nodeでの自動検証は完了し、previewのHTTP確認と本番反映後のPC・モバイル目視確認を残している。
+状態: 完了。ローカル実装・固定Nodeでの自動検証・本番反映・公開URLのHTTP確認・実ブラウザでの表示とClientRouter遷移確認を完了した。
 
 - [x] 状態: 完了 — Google providerでNoto Sans JP・Noto Color Emoji・Moirai Oneを登録し、`<Font />` とTailwindのCSS変数を接続した。
 - [x] 状態: 完了 — `src` 配下のAstro・Markdownソースからglyphを収集してGoogle providerのsubsetを指定し、生成フォントを3ファイル・168,268 bytesまで縮小した。生成HTMLにGoogle Fontsの外部URLは残っていない。
 - [x] 状態: 完了 — Node 24.1.0・npm 11.3.0で `npm run check` と実フォント取得付き `npm run build` が終了コード0。checkは0 errors・0 warnings・0 hints。
-- [ ] 状態: 検証待ち — previewの3ページHTTP応答、フォント適用、PC・モバイル表示とClientRouter遷移を確認する。
-- [ ] 状態: 保留 — 本番デプロイ後にGoogle向けrequestが0件であることと転送量を確認し、完了へ更新する。
+- [x] 状態: 完了 — 本番の3ページと生成フォント3ファイルがHTTP 200。PC・モバイル表示、フォント適用、ClientRouter遷移、戻る・進む操作を確認した。
+- [x] 状態: 完了 — 本番HTMLにGoogle Fontsの外部参照がなく、自己ホストしたフォントだけが配信されていることを確認した。
 
 Astro Fonts APIは、フォントprovider・使用するweight/style・fallback・CSS変数を `astro.config.mjs` で宣言し、Astroがビルド時にフォントを取得・キャッシュして静的アセットとして配信する仕組み。現在は閲覧者のブラウザーがGoogleへ直接接続するが、移行後はビルド時に取得したファイルをCloudflare Pagesから配信する。
 
@@ -328,7 +328,7 @@ Astro Fonts APIは、フォントprovider・使用するweight/style・fallback�
 | 2026-09-27 | Phase 3 | 完了 | Tailwind integrationを公式PostCSS接続へ移行。Node 24.1.0・npm 11.3.0で `npm ci`、`npm ls`、check、buildが終了コード0。checkは18ファイルで診断0、previewは3ページとfaviconが200・未知パスが404。旧CSS本体と新CSSは、HTMLから外部CSSへ移った2規則を除いて一致。PC・モバイルで表示と遷移を目視確認 | `a35e1b5`。Phase 4のAstro 5→6へ進む |
 | 2026-10-08 | Phase 4 | 完了 | Astro 6.4.8・MDX 6.0.3へ更新。Node 24.1.0・npm 11.3.0で `npm ci`、`npm ls`、check、画像最適化付きstatic buildが終了コード0。previewは3ページとfaviconが200・未知パスが404。旧成果物との比較でDOM構造・本文、MDX見出しID、画像hashを維持し、CSS差は`@media`内の空白圧縮のみ。PC・モバイルで表示と遷移を目視確認 | `aafef02`。Phase 4完了 |
 | 2026-10-08 | Phase 5 | 完了 | Astro 7.3.7・MDX 8.0.3へ更新し、従来の空白処理を明示。Node 24.1.0・npm 11.3.0でクリーンな `npm ci`、`npm ls`、check、Rust compiler・Sätteri・Vite 8によるstatic buildが終了コード0。previewは3ページとfaviconが200・未知パスが404。Astro 6成果物との比較でDOM構造・本文、MDX見出しID・外部リンク差し替え、画像hash、主要CSS規則を維持。PC・モバイルで表示とClientRouter遷移を目視確認 | Phase 5完了。Astroメジャーアップグレード計画を完遂 |
-| 2026-10-10 | Fonts API | 検証待ち | Astro 7.3.7のGoogle providerで3書体を自己ホスト化。glyph subset後の生成フォントは3ファイル・168,268 bytes。Node 24.1.0・npm 11.3.0でcheck（0 errors・0 warnings・0 hints）と実フォント取得付きbuildが終了コード0。生成HTMLにGoogle Fonts外部URLなし | ローカル実装済み。preview・本番配信・画面確認待ち |
+| 2026-10-10 | Fonts API | 完了 | Astro 7.3.7のGoogle providerで3書体を自己ホスト化。glyph subset後の生成フォントは3ファイル・168,268 bytes。Node 24.1.0・npm 11.3.0でcheck（0 errors・0 warnings・0 hints）と実フォント取得付きbuildが終了コード0。本番3ページとフォント3ファイルがHTTP 200、HTMLにGoogle Fonts外部URLなし。PC・モバイル表示とClientRouter遷移を確認 | `3c74be8`。Fonts API移行完了 |
 
 追記時は実行したPhase、Node/npm、コマンド終了コード、画面確認、変更した判断、コミットを記録する。途中終了は「検証待ち」「保留」とし、未実行項目のチェックを付けない。
 
