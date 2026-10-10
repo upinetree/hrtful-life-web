@@ -12,16 +12,16 @@
   },
   "dependencies": {
     "@astrojs/mdx": "8.0.3",
-    "astro": "7.3.7",
-    "sharp": "0.34.5",
-    "tailwindcss": "^3.4.17"
+    "astro": "7.3.8",
+    "sharp": "0.35.5",
+    "tailwindcss": "^3.4.19"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
-    "@tailwindcss/typography": "^0.5.16",
-    "autoprefixer": "10.4.21",
+    "@tailwindcss/typography": "^0.5.20",
+    "autoprefixer": "10.6.1",
     "npm-check-updates": "^16.14.20",
-    "postcss": "8.5.4",
+    "postcss": "8.5.29",
     "typescript": "5.9.3"
   }
 }

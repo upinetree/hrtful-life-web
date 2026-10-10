@@ -16,17 +16,17 @@ Astro を **5.8.2 → 5.18.2 → 6.4.8 → 7.3.7** の順で更新し、メジ�
 
 ## 現状スナップショット
 
-以下は2026-10-08の実測値。次のPhase実行時には再確認し、この表と進捗ログを更新する。
+以下は2026-10-10の実測値。依存更新後の最終構成を記録している。
 
 | 項目 | 宣言・実値 | 根拠 |
 | --- | --- | --- |
-| Astro | 宣言・lock `7.3.7` | `package.json`、`package-lock.json` |
+| Astro | 宣言・lock `7.3.8` | `package.json`、`package-lock.json` |
 | Cloudflare adapter | 削除済み | `astro.config.mjs`、`package.json` |
 | MDX | 宣言・lock `8.0.3` | `package.json`、`package-lock.json` |
 | Tailwind integration | 削除済み。Tailwind 3をPostCSSから直接読み込む | `astro.config.mjs`、`postcss.config.cjs` |
-| Tailwind CSS | 宣言 `^3.4.17`、lock `3.4.17` | `package.json:17`、`package-lock.json` |
-| PostCSS / Autoprefixer | 宣言・lock `8.5.4` / `10.4.21` | `package.json`、`package-lock.json` |
-| Typography | 宣言 `^0.5.16`、lock `0.5.16` | `package.json:21`、`package-lock.json` |
+| Tailwind CSS | 宣言 `^3.4.19`、lock `3.4.19` | `package.json:17`、`package-lock.json` |
+| PostCSS / Autoprefixer | 宣言・lock `8.5.29` / `10.6.1` | `package.json`、`package-lock.json` |
+| Typography | 宣言 `^0.5.20`、lock `0.5.20` | `package.json:21`、`package-lock.json` |
 | Astro check | 宣言・lock `0.9.10` | `package.json`、`package-lock.json` |
 | TypeScript | 宣言・lock `5.9.3` | `package.json`、`package-lock.json` |
 | Vite | Astroの推移依存 `8.3.3` | `package-lock.json`、`npm ls` |
@@ -334,6 +334,7 @@ Cloudflare Pagesの`public/_headers`で全静的レスポンスにCSPを設定�
 | 2026-10-08 | Phase 5 | 完了 | Astro 7.3.7・MDX 8.0.3へ更新し、従来の空白処理を明示。Node 24.1.0・npm 11.3.0でクリーンな `npm ci`、`npm ls`、check、Rust compiler・Sätteri・Vite 8によるstatic buildが終了コード0。previewは3ページとfaviconが200・未知パスが404。Astro 6成果物との比較でDOM構造・本文、MDX見出しID・外部リンク差し替え、画像hash、主要CSS規則を維持。PC・モバイルで表示とClientRouter遷移を目視確認 | Phase 5完了。Astroメジャーアップグレード計画を完遂 |
 | 2026-10-10 | Fonts API | 完了 | Astro 7.3.7のGoogle providerで3書体を自己ホスト化。glyph subset後の生成フォントは3ファイル・168,268 bytes。Node 24.1.0・npm 11.3.0でcheck（0 errors・0 warnings・0 hints）と実フォント取得付きbuildが終了コード0。本番3ページとフォント3ファイルがHTTP 200、HTMLにGoogle Fonts外部URLなし。PC・モバイル表示とClientRouter遷移を確認 | `3c74be8`。Fonts API移行完了 |
 | 2026-10-10 | CSP | 完了 | `public/_headers`でReport-Onlyを導入し、ブラウザ確認後に強制CSPへ切り替え。Node 24.1.0・npm 11.3.0でcheckとbuildが終了コード0、本番3ページで`Content-Security-Policy`ヘッダーを確認 | `998a357`、`b4e9933`。CSP導入完了 |
+| 2026-10-10 | 依存更新 | 完了 | Astro 7.3.8、Tailwind CSS 3.4.19、Typography 0.5.20、PostCSS 8.5.29、Autoprefixer 10.6.1、Sharp 0.35.5へ更新。Node 24.1.0・npm 11.3.0でクリーンな`npm ci`、`npm ls`、check、buildが終了コード0 | このファイルの改名と同じコミットに記録 |
 
 追記時は実行したPhase、Node/npm、コマンド終了コード、画面確認、変更した判断、コミットを記録する。途中終了は「検証待ち」「保留」とし、未実行項目のチェックを付けない。
 
