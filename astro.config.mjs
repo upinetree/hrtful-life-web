@@ -1,6 +1,7 @@
 import { defineConfig, fontProviders } from "astro/config";
 
 import mdx from "@astrojs/mdx";
+import tailwindcss from "@tailwindcss/vite";
 
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -70,4 +71,7 @@ export default defineConfig({
     },
   ],
   integrations: [mdx()],
+  vite: {
+    plugins: [tailwindcss()],
+  },
 });

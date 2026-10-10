@@ -30,7 +30,7 @@ const titlePrefix = "HRTful Life";
   </head>
   <body>
     <div
-      class="min-h-screen bg-gradient-to-br from-spring-sky-100 to-spring-field-100 font-normal"
+      class="min-h-screen bg-linear-to-br from-spring-sky-100 to-spring-field-100 font-normal"
     >
       <Header brand="HRTful.life" />
       <main class="hrt-container">
@@ -43,6 +43,8 @@ const titlePrefix = "HRTful Life";
 
 <style is:global>
   .hrt-container {
-    @apply max-w-[65rem] mx-auto px-4;
+    max-width: 65rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
   }
 </style>

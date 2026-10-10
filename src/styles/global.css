@@ -1,3 +1,97 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@plugin '@tailwindcss/typography';
+
+@theme {
+  --font-sans: var(--font-noto-sans-jp);
+  --font-brand: var(--font-moirai-one);
+
+  --color-spring-green-50: #eefbf6;
+  --color-spring-green-100: #d7f4e8;
+  --color-spring-green-200: #a8e6cf;
+  --color-spring-green-300: #7ed7bc;
+  --color-spring-green-400: #4abd9d;
+  --color-spring-green-500: #27a284;
+  --color-spring-green-600: #19826b;
+  --color-spring-green-700: #146858;
+  --color-spring-green-800: #125347;
+  --color-spring-green-900: #10443b;
+  --color-spring-green-950: #082622;
+
+  --color-bulb-orange-50: #fff5ed;
+  --color-bulb-orange-100: #ffe7d5;
+  --color-bulb-orange-200: #ffd3b6;
+  --color-bulb-orange-300: #ffa672;
+  --color-bulb-orange-400: #fd773a;
+  --color-bulb-orange-500: #fc5313;
+  --color-bulb-orange-600: #ed3709;
+  --color-bulb-orange-700: #c4260a;
+  --color-bulb-orange-800: #9c2010;
+  --color-bulb-orange-900: #7d1d11;
+  --color-bulb-orange-950: #440b06;
+
+  --color-spring-pink-50: #fff1f3;
+  --color-spring-pink-100: #ffe3e7;
+  --color-spring-pink-200: #ffc0cb;
+  --color-spring-pink-300: #ffa2b3;
+  --color-spring-pink-400: #fe6e8b;
+  --color-spring-pink-500: #f83b66;
+  --color-spring-pink-600: #e51951;
+  --color-spring-pink-700: #c20e43;
+  --color-spring-pink-800: #a20f40;
+  --color-spring-pink-900: #8a113c;
+  --color-spring-pink-950: #4d041c;
+
+  --color-sunset-orange-50: #fff3eb;
+  --color-sunset-orange-100: #ffe1cd;
+  --color-sunset-orange-200: #ffc8a3;
+  --color-sunset-orange-300: #ffae7a;
+  --color-sunset-orange-400: #ff9450;
+  --color-sunset-orange-500: #ff8c42;
+  --color-sunset-orange-600: #ff611a;
+  --color-sunset-orange-700: #e54700;
+  --color-sunset-orange-800: #b23600;
+  --color-sunset-orange-900: #802600;
+
+  --color-spring-field-50: #f8f9f1;
+  --color-spring-field-100: #f2f4e1;
+  --color-spring-field-200: #dee1ad;
+  --color-spring-field-300: #cdcf7d;
+  --color-spring-field-400: #bebb55;
+  --color-spring-field-500: #b0a745;
+  --color-spring-field-600: #98893a;
+  --color-spring-field-700: #7b6932;
+  --color-spring-field-800: #695830;
+  --color-spring-field-900: #5b4b2f;
+  --color-spring-field-950: #342a18;
+
+  --color-spring-sky-50: #f5fbfe;
+  --color-spring-sky-100: #dff0fb;
+  --color-spring-sky-200: #c3e5f8;
+  --color-spring-sky-300: #8cd0f2;
+  --color-spring-sky-400: #4db6ea;
+  --color-spring-sky-500: #1f9cdb;
+  --color-spring-sky-600: #117dbb;
+  --color-spring-sky-700: #0f6799;
+  --color-spring-sky-800: #11567e;
+  --color-spring-sky-900: #14496c;
+  --color-spring-sky-950: #0e3049;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}

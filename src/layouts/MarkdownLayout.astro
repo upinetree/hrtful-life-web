@@ -13,10 +13,10 @@ const { frontmatter } = Astro.props;
 
 <Layout title={frontmatter.title}>
   <article
-    class="prose max-w-none prose-a:text-spring-green-500 hover:prose-a:text-spring-green-400 mt-10"
+    class="prose max-w-none prose-a:text-spring-green-500 prose-a:hover:text-spring-green-400 mt-10"
   >
     <slot />
   </article>
-  <hr class="my-5 border-spring-green-400 border-t-1" />
+  <hr class="my-5 border-spring-green-400 border-t" />
   <p class="text-sm font-thin">last updated: {frontmatter.updatedDate}</p>
 </Layout>
