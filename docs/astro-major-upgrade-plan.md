@@ -244,12 +244,12 @@ Sätteriで互換問題が観測された場合は、`@astrojs/markdown-remark@7
 | 導入メジャー | 新機能 | 適合する箇所・用途 | 期待する効果 | 導入コスト・リスク | 最終提案 |
 | --- | --- | --- | --- | --- | --- |
 | Astro 6 | Fonts API | `Layout.astro` がGoogle Fontsを3本の外部stylesheetで読み込む箇所 | フォントの自己ホスト、preload、fallback最適化、閲覧者のGoogle接続削減 | 3書体・weight・emojiの対応確認とTailwind fontFamilyのCSS変数移行が必要 | **推奨**。最初の採用候補 |
-| Astro 6 / 7.1 | Content Security Policy APIと要素・属性別directive | ClientRouterとinline styleを含む全3ページ | Astro生成script/styleのhashと細かなdirectiveでXSS耐性を高める | 現在のGoogle Fonts外部stylesheetは標準設定だけでは扱えないため、Fonts API移行後にCSPレポートと画面遷移を検証する | **条件付き**。Fonts APIの後に採用 |
+| Astro 6 / 7.1 | Content Security Policy APIと要素・属性別directive | ClientRouterとinline styleを含む全3ページ | Astro生成script/styleのhashと細かなdirectiveでXSS耐性を高める | Report-Onlyで違反がないことを確認してから、Cloudflare Pagesの`_headers`で強制適用した | **対応済み**。追加作業なし |
 | Astro 6.4 / 7 | Sätteri Markdown processor | `src/pages/me.mdx` のMDX処理 | Rust実装の既定processorへ移行 | Astro 7更新で既定化済み。layout・components差し替え・日本語見出しを検証済み | **対応済み**。追加作業なし |
 | Astro 7 / 7.2 / 7.3 | 管理対象のbackground dev/preview server・health endpoint・複数server | エージェントによる表示検証と並行worktree | 起動完了待ち、PID・ログ・停止、重複回避をCLIへ委ねられる | managed sandboxでは自動background起動した子プロセスがportを開けないため、`--ignore-lock` と権限昇格が必要 | **条件付き**。ローカル運用へ必要時に追記 |
 | Astro 7.2 | Experimental incremental static builds | 3ページのstatic build | 将来ページ数が大幅に増えた場合の再ビルド短縮 | 現在のbuildは約1秒で、実験機能の状態管理コストが効果を上回る | **見送り** |
 
-最終提案は、(1) Fonts APIを先に導入、(2) 外部Google Fonts依存を解消した後にCSPを導入、(3) background serverは運用上必要になった時だけ手順化、の順とする。SätteriはAstro 7移行で対応済み。advanced routing・route cache・JSON loggingは3ページのstatic配信には利用箇所がなく、incremental static buildも現状の約1秒buildには過剰なため見送る。Fonts APIは以下の個別タスクとして実装を開始し、CSPは本番確認後の別コミットとする。
+最終提案は、Fonts APIとCSPを導入し、background serverは運用上必要になった時だけ手順化する順とする。SätteriはAstro 7移行で対応済み。advanced routing・route cache・JSON loggingは3ページのstatic配信には利用箇所がなく、incremental static buildも現状の約1秒buildには過剰なため見送る。
 
 ### 次期タスク案 — Fonts API
 
@@ -300,7 +300,11 @@ Astro Fonts APIは、フォントprovider・使用するweight/style・fallback�
 - preloadはabove-the-foldに必須なファイルへ限定し、不要なweightや絵文字フォントを先読みしないこと。
 - 初回buildでproviderへのネットワーク接続が必要になる前提と、`.astro/fonts`・`node_modules/.astro/fonts` のキャッシュ挙動を確認すること。
 
-成功条件: 閲覧時のGoogle Fonts向けrequestが0件で、3書体・指定weight・emoji・brand表示を維持し、フォント転送量とレイアウトシフトが許容範囲に収まる。ロールバック境界: Fonts API移行コミット。CSP導入はこの移行を本番確認した後の別コミットとする。[Astro Fontsガイド][astro-fonts-guide]
+成功条件: 閲覧時のGoogle Fonts向けrequestが0件で、3書体・指定weight・emoji・brand表示を維持し、フォント転送量とレイアウトシフトが許容範囲に収まる。ロールバック境界: Fonts API移行コミット。[Astro Fontsガイド][astro-fonts-guide]
+
+### 実施済み — Content Security Policy
+
+Cloudflare Pagesの`public/_headers`で全静的レスポンスにCSPを設定した。まず`Content-Security-Policy-Report-Only`で全3ページのHTTP応答と実ブラウザ表示を確認し、問題がなかったため`Content-Security-Policy`へ切り替えた。`script-src`・`font-src`・`connect-src`は同一オリジンに限定し、Astro生成のinline styleを維持するため`style-src 'unsafe-inline'`を許可している。Node 24.1.0・npm 11.3.0でcheckとbuildが終了コード0、本番の全3ページで強制ヘッダーを確認した。
 
 ## リスクと未確認事項
 
@@ -329,6 +333,7 @@ Astro Fonts APIは、フォントprovider・使用するweight/style・fallback�
 | 2026-10-08 | Phase 4 | 完了 | Astro 6.4.8・MDX 6.0.3へ更新。Node 24.1.0・npm 11.3.0で `npm ci`、`npm ls`、check、画像最適化付きstatic buildが終了コード0。previewは3ページとfaviconが200・未知パスが404。旧成果物との比較でDOM構造・本文、MDX見出しID、画像hashを維持し、CSS差は`@media`内の空白圧縮のみ。PC・モバイルで表示と遷移を目視確認 | `aafef02`。Phase 4完了 |
 | 2026-10-08 | Phase 5 | 完了 | Astro 7.3.7・MDX 8.0.3へ更新し、従来の空白処理を明示。Node 24.1.0・npm 11.3.0でクリーンな `npm ci`、`npm ls`、check、Rust compiler・Sätteri・Vite 8によるstatic buildが終了コード0。previewは3ページとfaviconが200・未知パスが404。Astro 6成果物との比較でDOM構造・本文、MDX見出しID・外部リンク差し替え、画像hash、主要CSS規則を維持。PC・モバイルで表示とClientRouter遷移を目視確認 | Phase 5完了。Astroメジャーアップグレード計画を完遂 |
 | 2026-10-10 | Fonts API | 完了 | Astro 7.3.7のGoogle providerで3書体を自己ホスト化。glyph subset後の生成フォントは3ファイル・168,268 bytes。Node 24.1.0・npm 11.3.0でcheck（0 errors・0 warnings・0 hints）と実フォント取得付きbuildが終了コード0。本番3ページとフォント3ファイルがHTTP 200、HTMLにGoogle Fonts外部URLなし。PC・モバイル表示とClientRouter遷移を確認 | `3c74be8`。Fonts API移行完了 |
+| 2026-10-10 | CSP | 完了 | `public/_headers`でReport-Onlyを導入し、ブラウザ確認後に強制CSPへ切り替え。Node 24.1.0・npm 11.3.0でcheckとbuildが終了コード0、本番3ページで`Content-Security-Policy`ヘッダーを確認 | `998a357`、`b4e9933`。CSP導入完了 |
 
 追記時は実行したPhase、Node/npm、コマンド終了コード、画面確認、変更した判断、コミットを記録する。途中終了は「検証待ち」「保留」とし、未実行項目のチェックを付けない。
 
