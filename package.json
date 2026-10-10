@@ -4,11 +4,12 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && npm run verify:fonts",
     "check": "astro check",
     "preview": "astro preview",
     "astro": "astro",
-    "update": "ncu -u --target minor && npm update"
+    "update": "ncu -u --target minor && npm update",
+    "verify:fonts": "node scripts/verify-built-fonts.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "8.0.3",
